@@ -1,0 +1,63 @@
+const responseCode = {
+  ACCEPTED: 202,
+  BAD_REQUEST: 400,
+  CREATED: 201,
+  FORBIDDEN: 403,
+  INTERNAL_SERVER: 500,
+  METHOD_NOT_ALLOWED: 405,
+  NOT_ACCEPTABLE: 406,
+  NOT_FOUND: 404,
+  NO_CONTENT: 204,
+  OK: 200,
+  PARTIAL_CONTENT: 206,
+  UNAUTHORIZED: 401
+}
+
+const commonResponse = {
+  error: {
+    INTERNAL_SERVER: 'Internal server error.',
+    INVALID_IMAGE_TYPE: 'Please provide image with format: jpg/jpeg/png only.',
+    INVALID_BODY: 'The data you have provided is incorrect or insufficient.',
+    NO_DATA_TO_UPDATE: (name) => `No data was provided to update ${name}.`,
+    UNAUTHORIZED_ACCESS: 'You are not authorized to access this route.'
+  }
+}
+
+const userResponse = {
+  error: {
+    ACTIVATION: 'User activation process failed.',
+    ALREADY_REGISTERED: 'The email has already registered in our system.',
+    CHANGE_PASSWORD: 'Changing password failed.',
+    COUNT: 'Error counting users data.',
+    DEACTIVATION: 'User deactivation process failed.',
+    FETCH_ALL: 'Users cannot be fetched at the moment.',
+    INVALID_OPERATION: 'The operation you wish to perform is invalid.',
+    INVALID_PASSWORD: 'Previous password is incorrect.',
+    JWT_TOKEN: 'You are not authorized in the system.',
+    GENERATE_JWT: 'System was unable to generate JWT Token.',
+    UNKNOWN_EMAIL: 'Please use valid user email for JWT Token.',
+    REGISTER: 'You have not been registered.',
+    INVITE_USER: 'Error while inviting new user to the system.',
+    RESET_PASSWORD: 'Error occurred while setting new password',
+    UNVERIFIED_LOGIN: 'User has not been verified yet, please complete the verification process.',
+    USER_CREDENTIALS: 'Error fetching user credentials.',
+    USER_INACTIVE: 'User cannot access the system (INACTIVE).',
+    USER_NOT_FOUND: 'User was not found in the system.',
+    USER_PROFILE: 'Error fetching user profile.',
+    USER_UPDATE: 'We are unable to update the user at the time.',
+    USER_DELETE: 'We are unable to delete the user at the time.'
+  },
+  success: {
+    ACTIVATION: 'User has been activated successfully.',
+    CHANGE_PASSWORD: 'Password has been changed successfully.',
+    COUNT: 'User has been counted successfully',
+    DEACTIVATION: 'User has been deactivated successfully.',
+    FETCH_ALL: 'All users have been fetched successfully.',
+    JWT_TOKEN: 'JWT token has been successfully generated.',
+    INVITE_USER: 'You have successfully invited a new user.',
+    USER_PROFILE: 'User profile has been fetched successfully.',
+    USER_UPDATED: 'User has been updated successfully.'
+  }
+}
+
+export { commonResponse, responseCode, userResponse }
