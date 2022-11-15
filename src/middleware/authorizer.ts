@@ -9,7 +9,7 @@ const authorizerAdmin = (req, res, next) => {
     .then((user) => {
       if (!user) {
         next({ message: userResponse.error.USER_NOT_FOUND, status: responseCode.NOT_FOUND })
-      } else if (user.category !== UserCategory.ADMIN) {
+      } else if (user.category !== UserCategory.MANAGER) {
         next({ message: commonResponse.error.UNAUTHORIZED_ACCESS, status: responseCode.FORBIDDEN })
       } else {
         next()

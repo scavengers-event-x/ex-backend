@@ -1,4 +1,5 @@
 export * from './enum'
 export * from './genericTypes'
 export * from './jsonwebtoken'
+export * from './utilFunctions'
 export * from './responseHandler'

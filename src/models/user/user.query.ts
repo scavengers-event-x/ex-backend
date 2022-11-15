@@ -1,24 +1,30 @@
-import { ObjectId, Types } from 'mongoose'
+import { ObjectId } from 'mongoose'
 
 import { UserModel } from './userModel'
 import { FunctionWithParamAndReturn, GenericObject } from '../../utils'
-import { FieldTypeUserValidStatus, FieldTypeUserInsert } from './user.types'
+import { FieldTypeUserRegister, FieldTypeUserValidStatus, UserAccountStatus, UserCategory } from './user.types'
 
-const userProjection = { category: 1, email: 1, fullName: 1 }
+const userProjection = {
+  accountStatus: 1, category: 1, email: 1, image: 1, isVerified: 1, profile: 1
+}
 
-const fetchAllUsers = (id) => {
-  return UserModel.find({ _id: { $nin: [new Types.ObjectId(id)] }, deleted: false })
+const fetchAllUsers = () => {
+  return UserModel.find()
 }
 
 const fetchUserById = (id: ObjectId) => {
   return UserModel.findById(id, { ...userProjection })
 }
 
+const fetchUserCredential = (id: ObjectId) => {
+  return UserModel.findById(id, { ...userProjection, password: 1 })
+}
+
 const fetchUserByKeyValue = (object: GenericObject<string>) => {
   return UserModel.findOne(object)
 }
 
-const insertUser = (data: FieldTypeUserInsert) => {
+const insertUser = (data: FieldTypeUserRegister) => {
   const newUser = new UserModel(data)
 
   return newUser.save({ validateBeforeSave: true })
@@ -27,9 +33,10 @@ const insertUser = (data: FieldTypeUserInsert) => {
 const getUserValidStatus:FunctionWithParamAndReturn<ObjectId, Promise<FieldTypeUserValidStatus>> = async (userId) => {
   try {
     const user = await UserModel.findById(userId, {})
-    return { isInSystem: !!user }
+
+    return { isActive: user?.get('accountStatus') === UserAccountStatus.ACTIVE, isInSystem: !!user }
   } catch (err) {
-    return { isInSystem: false }
+    return { isActive: false, isInSystem: false }
   }
 }
 
@@ -37,11 +44,17 @@ const updateUser = (id: ObjectId, data) => {
   return UserModel.findByIdAndUpdate(id, { $set: data }, { projection: { ...userProjection }, returnDocument: 'after', returnOriginal: false })
 }
 
+const fetchUsersByCategory = (category: UserCategory) => {
+  return UserModel.find({ accountStatus: UserAccountStatus.ACTIVE, category }, { _id: 1, email: 1, image: 1, profile: 1 })
+}
+
 export {
   fetchAllUsers,
-  insertUser,
+  fetchUserCredential,
   fetchUserById,
   fetchUserByKeyValue,
+  insertUser,
   updateUser,
-  getUserValidStatus
+  getUserValidStatus,
+  fetchUsersByCategory,
 }
