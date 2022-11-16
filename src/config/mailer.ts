@@ -9,8 +9,8 @@ export const mailer = createTransport({
     pass: envVars.MAILER_PASS,
     user: envVars.MAILER_USER
   },
-  secure: true,
-  service: 'Gmail'
+  port: envVars.MAILER_PORT,
+  host: envVars.MAILER_HOST
 })
 
 interface prepareOtpMailPropTypes {
@@ -47,7 +47,7 @@ export const prepareOtpMail:FunctionWithParamAndReturn<prepareOtpMailPropTypes, 
   }
 
   return ({
-    from: `Learn To Drive <noreply@ltd.com.np>`,
+    from: `Event-X <noreply@eventx.com>`,
     html: `
       <html>
           <head>
@@ -76,7 +76,7 @@ export const prepareOtpMail:FunctionWithParamAndReturn<prepareOtpMailPropTypes, 
               </br>
               <p>If you didn't request this mail, please ignore and delete this message.</p>
               <p>Thank You</p>
-              <p>Learn to Drive Pvt. Ltd.</p>
+              <p>Event-X Pvt. Ltd.</p>
           </body>
       </html>
     `,
