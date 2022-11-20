@@ -9,8 +9,10 @@ const venueSchema = new Schema<IVenueMain>({
     required: true
   },
   capacity: {
-    max: { type: Number, required: true },
-    min: { type: Number },
+    type: {
+      max: { type: Number, required: true },
+      min: { type: Number }
+    },
     required: true
   },
   contact: {
@@ -30,6 +32,6 @@ const venueSchema = new Schema<IVenueMain>({
   deleted: { type: Boolean, default: false }
 }, { strict: true, timestamps: { createdAt: true, updatedAt: 'modifiedAt' } })
 
-const VenueModel: Model<IVenueMain> = model(CollectionNames.THEME, venueSchema)
+const VenueModel: Model<IVenueMain> = model(CollectionNames.VENUE, venueSchema)
 
 export { VenueModel }
