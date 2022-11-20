@@ -1,11 +1,12 @@
 import { Router } from 'express'
 
-import { userRouter } from './models'
+import { userRouter, eventTypeRouter } from './models'
 
 const router = Router()
 
 // UNSECURE
 router.use('/user', userRouter)
+router.use('/event-type', eventTypeRouter)
 
 // SECURE
 

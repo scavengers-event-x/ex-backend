@@ -72,4 +72,22 @@ const userResponse = {
   }
 }
 
-export { commonResponse, responseCode, userResponse }
+const eventTypeResponse = {
+  error: {
+    DELETE: 'Error on deleting the event type.',
+    FETCH_ALL: 'Event types cannot be fetched at the moment.',
+    FETCH_BY_ID: 'Event type cannot be fetched at the moment.',
+    INSERT: 'Error on inserting new event type.',
+    UPDATE: 'Error on updating the event type.',
+    NOT_FOUND: 'Event type of provided id is not found in the system.'
+  },
+  success: {
+    DELETE: 'Event type has been deleted successfully.',
+    FETCH_ALL: 'All event types has been fetched successfully.',
+    FETCH_BY_ID: 'The event type has been fetched successfully.',
+    INSERT: 'New event type has been inserted successfully.',
+    UPDATE: 'Event type has been updated successfully.'
+  }
+}
+
+export { commonResponse, responseCode, userResponse, eventTypeResponse }
