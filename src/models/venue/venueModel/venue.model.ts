@@ -22,13 +22,13 @@ const venueSchema = new Schema<IVenueMain>({
   inContract: { type: Boolean, default: false },
   location: { type: String, required: true },
   verified: { type: Boolean, default: false },
-  price: {
+  price: [{
     paxRange: {
       from: { type: Number, required: true },
       to: { type: Number, required: true }
     },
     amount: { type: Number, required: true }
-  },
+  }],
   deleted: { type: Boolean, default: false }
 }, { strict: true, timestamps: { createdAt: true, updatedAt: 'modifiedAt' } })
 
