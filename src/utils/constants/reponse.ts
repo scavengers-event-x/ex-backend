@@ -108,4 +108,6 @@ const eventTypeResponse = getModelResponse(CollectionNames.EVENT_TYPE)
 
 const themeResponse = getModelResponse(CollectionNames.THEME)
 
-export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse }
+const venueResponse = getModelResponse(CollectionNames.VENUE)
+
+export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse, venueResponse }
