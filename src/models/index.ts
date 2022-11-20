@@ -1,3 +1,4 @@
+export * from './cake'
 export * from './user'
 export * from './theme'
 export * from './venue'

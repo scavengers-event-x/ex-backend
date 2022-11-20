@@ -85,6 +85,10 @@ const mappedResponse = {
   [CollectionNames.THEME]: {
     TITLE: 'Theme',
     LOWER: 'theme'
+  },
+  [CollectionNames.CAKE]: {
+    TITLE: 'Cake',
+    LOWER: 'cake'
   }
 }
 
@@ -114,4 +118,15 @@ const themeResponse = getModelResponse(CollectionNames.THEME)
 
 const venueResponse = getModelResponse(CollectionNames.VENUE)
 
-export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse, venueResponse }
+const cakeResponse = {
+  error: {
+    ...getModelResponse(CollectionNames.CAKE).error,
+    AVAILABILITY: 'Error on updating the availability of cake.'
+  },
+  success: {
+    ...getModelResponse(CollectionNames.CAKE).success,
+    AVAILABILITY: 'Availability of cake has been updated successfully..'
+  }
+}
+
+export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse, venueResponse, cakeResponse }
