@@ -3,7 +3,8 @@ enum CollectionNames {
     EVENT_TYPE= 'eventTypedbs',
     THEME= 'themedbs',
     VENUE= 'venuedbs',
-    CAKE= 'cakedbs'
+    CAKE= 'cakedbs',
+    DECORATION= 'decorationdbs'
 }
 
 export { CollectionNames }

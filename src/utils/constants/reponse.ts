@@ -89,6 +89,10 @@ const mappedResponse = {
   [CollectionNames.CAKE]: {
     TITLE: 'Cake',
     LOWER: 'cake'
+  },
+  [CollectionNames.DECORATION]: {
+    TITLE: 'Decoration',
+    LOWER: 'decoration'
   }
 }
 
@@ -129,4 +133,15 @@ const cakeResponse = {
   }
 }
 
-export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse, venueResponse, cakeResponse }
+const decorationResponse = {
+  error: {
+    ...getModelResponse(CollectionNames.DECORATION).error,
+    AVAILABILITY: 'Error on updating the availability of decoration.'
+  },
+  success: {
+    ...getModelResponse(CollectionNames.DECORATION).success,
+    AVAILABILITY: 'Availability of decoration has been updated successfully..'
+  }
+}
+
+export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse, venueResponse, cakeResponse, decorationResponse }
