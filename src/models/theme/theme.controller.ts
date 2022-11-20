@@ -77,7 +77,7 @@ const conDeleteTheme = async (req, res, next) => {
   try {
     const response = await themeQuery.deleteTheme(id)
     res.status(response ? responseCode.OK : responseCode.INTERNAL_SERVER)
-      .send(makeSuccessObject<ITheme>(response, themeResponse.success.DELETE))
+      .send(makeSuccessObject<string>(response._id.toString(), themeResponse.success.DELETE))
   } catch (_err) {
     next({ message: themeResponse.error.DELETE, status: responseCode.BAD_REQUEST })
   }

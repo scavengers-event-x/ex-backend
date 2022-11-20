@@ -58,9 +58,12 @@ const conInsertNewEventType = async (req, res, next) => {
     return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.BAD_REQUEST })
   }
   try {
-    const response = await eventTypeQuery.insertEventType({ description, name })
-    res.status(response ? responseCode.OK : responseCode.INTERNAL_SERVER)
-      .send(makeSuccessObject<FieldTypeEventType>(response, eventTypeResponse.success.INSERT))
+    const insertRes = await eventTypeQuery.insertEventType({ description, name })
+    if (insertRes) {
+      const response = await eventTypeQuery.fetchEventTypeById(insertRes._id)
+      res.status(response ? responseCode.OK : responseCode.INTERNAL_SERVER)
+        .send(makeSuccessObject<FieldTypeEventType>(response[0], eventTypeResponse.success.INSERT))
+    }
   } catch (_err) {
     next({ message: eventTypeResponse.error.INSERT, status: responseCode.BAD_REQUEST })
   }
@@ -74,7 +77,7 @@ const conDeleteEventType = async (req, res, next) => {
   try {
     const response = await eventTypeQuery.deleteEventType(id)
     res.status(response ? responseCode.OK : responseCode.INTERNAL_SERVER)
-      .send(makeSuccessObject<FieldTypeEventType>(response, eventTypeResponse.success.DELETE))
+      .send(makeSuccessObject<string>(response._id.toString(), eventTypeResponse.success.DELETE))
   } catch (_err) {
     next({ message: eventTypeResponse.error.DELETE, status: responseCode.BAD_REQUEST })
   }

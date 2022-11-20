@@ -77,7 +77,7 @@ const conDeleteVenue = async (req, res, next) => {
   try {
     const response = await venueQuery.deleteVenue(id)
     res.status(response ? responseCode.OK : responseCode.INTERNAL_SERVER)
-      .send(makeSuccessObject<IVenue>(response, venueResponse.success.DELETE))
+      .send(makeSuccessObject<string>(response._id.toString(), venueResponse.success.DELETE))
   } catch (_err) {
     next({ message: venueResponse.error.DELETE, status: responseCode.BAD_REQUEST })
   }

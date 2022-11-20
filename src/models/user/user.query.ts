@@ -9,7 +9,7 @@ const userProjection = {
 }
 
 const fetchAllUsers = () => {
-  return UserModel.find()
+  return UserModel.find({}, { ...userProjection })
 }
 
 const fetchUserById = (id: ObjectId) => {
@@ -56,5 +56,5 @@ export {
   insertUser,
   updateUser,
   getUserValidStatus,
-  fetchUsersByCategory,
+  fetchUsersByCategory
 }

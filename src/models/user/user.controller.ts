@@ -76,8 +76,12 @@ const conRegisterNewUser = async (req, res, next) => {
   mailer.sendMail(prepareOtpMail({ emailId: req.body.email, fullName: req.body.profile.fullName, operation: UserOperations.REGISTER, otpCode }))
     .then(() => {
       insertUser({ ...req.body, operation: UserOperations.REGISTER, otpCode: cryptOtp, otpExpiry, password: cryptPassword })
-        .then((user) => {
-          res.status(responseCode.CREATED).send(makeSuccessObject<FieldTypeUser>(user, `${userResponse.success.REGISTER} ${userResponse.success.OTP_SENT(user.email)}`))
+        .then((insertRes) => {
+          if (insertRes) {
+            fetchUserById(res._id).then(user => {
+              res.status(responseCode.CREATED).send(makeSuccessObject<FieldTypeUser>(user, `${userResponse.success.REGISTER} ${userResponse.success.OTP_SENT(user.email)}`))
+            })
+          }
         })
         .catch((err) => {
           const duplicate = err?.message?.includes('duplicate')

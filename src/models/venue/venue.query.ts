@@ -2,21 +2,14 @@ import { ObjectId } from 'mongoose'
 
 import { VenueModel } from './venueModel'
 import { IVenue, IVenueMain } from './venue.types'
-
-const venueProjection = {
-  name: 1,
-  location: 1,
-  contact: 1,
-  capacity: 1,
-  price: 1
-}
+import { COMMON_UN_PROJECTION } from '../../utils/constants'
 
 const fetchAllVenues = () => {
-  return VenueModel.find({ deleted: false })
+  return VenueModel.find({ deleted: false }, { ...COMMON_UN_PROJECTION })
 }
 
 const fetchVenueById = (id: ObjectId) => {
-  return VenueModel.find<IVenueMain>({ deleted: false, _id: id }, { ...venueProjection })
+  return VenueModel.find<IVenueMain>({ deleted: false, _id: id }, { ...COMMON_UN_PROJECTION })
 }
 
 const insertVenue = (data: IVenue) => {
@@ -26,7 +19,7 @@ const insertVenue = (data: IVenue) => {
 }
 
 const updateVenue = (id: ObjectId, data: IVenue) => {
-  return VenueModel.findByIdAndUpdate(id, { $set: data }, { projection: { ...venueProjection }, returnDocument: 'after', returnOriginal: false })
+  return VenueModel.findByIdAndUpdate(id, { $set: data }, { projection: { ...COMMON_UN_PROJECTION }, returnDocument: 'after', returnOriginal: false })
 }
 
 const deleteVenue = (id: ObjectId) => {
