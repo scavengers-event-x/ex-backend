@@ -93,6 +93,10 @@ const mappedResponse = {
   [CollectionNames.DECORATION]: {
     TITLE: 'Decoration',
     LOWER: 'decoration'
+  },
+  [CollectionNames.DRINK]: {
+    TITLE: 'Drink',
+    LOWER: 'drink'
   }
 }
 
@@ -104,14 +108,16 @@ const getModelResponse = (model: CollectionNames) => {
       FETCH_BY_ID: `${mappedResponse[model].TITLE} cannot be fetched at the moment.`,
       INSERT: `Error on inserting new ${mappedResponse[model].LOWER}.`,
       UPDATE: `Error on updating the ${mappedResponse[model].LOWER}.`,
-      NOT_FOUND: `${mappedResponse[model].TITLE} of provided id is not found in the system.`
+      NOT_FOUND: `${mappedResponse[model].TITLE} of provided id is not found in the system.`,
+      AVAILABILITY: `Error on updating the availability of ${mappedResponse[model].LOWER}.`
     },
     success: {
       DELETE: `${mappedResponse[model].TITLE} has been deleted successfully.`,
       FETCH_ALL: `All ${mappedResponse[model].LOWER}s has been fetched successfully.`,
       FETCH_BY_ID: `The ${mappedResponse[model].LOWER} has been fetched successfully.`,
       INSERT: `New ${mappedResponse[model].LOWER} has been inserted successfully.`,
-      UPDATE: `${mappedResponse[model].TITLE} has been updated successfully.`
+      UPDATE: `${mappedResponse[model].TITLE} has been updated successfully.`,
+      AVAILABILITY: `Availability of ${mappedResponse[model].LOWER} has been updated successfully.`
     }
   })
 }
@@ -122,26 +128,10 @@ const themeResponse = getModelResponse(CollectionNames.THEME)
 
 const venueResponse = getModelResponse(CollectionNames.VENUE)
 
-const cakeResponse = {
-  error: {
-    ...getModelResponse(CollectionNames.CAKE).error,
-    AVAILABILITY: 'Error on updating the availability of cake.'
-  },
-  success: {
-    ...getModelResponse(CollectionNames.CAKE).success,
-    AVAILABILITY: 'Availability of cake has been updated successfully..'
-  }
-}
+const cakeResponse = getModelResponse(CollectionNames.CAKE)
 
-const decorationResponse = {
-  error: {
-    ...getModelResponse(CollectionNames.DECORATION).error,
-    AVAILABILITY: 'Error on updating the availability of decoration.'
-  },
-  success: {
-    ...getModelResponse(CollectionNames.DECORATION).success,
-    AVAILABILITY: 'Availability of decoration has been updated successfully..'
-  }
-}
+const decorationResponse = getModelResponse(CollectionNames.DECORATION)
 
-export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse, venueResponse, cakeResponse, decorationResponse }
+const drinkResponse = getModelResponse(CollectionNames.DRINK)
+
+export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse, venueResponse, cakeResponse, decorationResponse, drinkResponse }
