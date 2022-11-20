@@ -1,4 +1,5 @@
-import { generateDisplayEmail } from '../utilFunctions'
+import {generateDisplayEmail} from '../utilFunctions'
+import {CollectionNames} from '../../config'
 
 const responseCode = {
   ACCEPTED: 202,
@@ -68,26 +69,43 @@ const userResponse = {
     OTP_VERIFIED: 'The OTP code has been verified successfully.',
     REGISTER: 'You have been registered successfully.',
     RESET_PASSWORD: 'You have successfully set new password',
-    USER_CREDENTIALS: 'User credentials has been fetched successfully.',
+    USER_CREDENTIALS: 'User credentials has been fetched successfully.'
   }
 }
 
-const eventTypeResponse = {
-  error: {
-    DELETE: 'Error on deleting the event type.',
-    FETCH_ALL: 'Event types cannot be fetched at the moment.',
-    FETCH_BY_ID: 'Event type cannot be fetched at the moment.',
-    INSERT: 'Error on inserting new event type.',
-    UPDATE: 'Error on updating the event type.',
-    NOT_FOUND: 'Event type of provided id is not found in the system.'
+const mappedResponse = {
+  [CollectionNames.EVENT_TYPE]: {
+    TITLE: 'Event type',
+    LOWER: 'event Type'
   },
-  success: {
-    DELETE: 'Event type has been deleted successfully.',
-    FETCH_ALL: 'All event types has been fetched successfully.',
-    FETCH_BY_ID: 'The event type has been fetched successfully.',
-    INSERT: 'New event type has been inserted successfully.',
-    UPDATE: 'Event type has been updated successfully.'
+  [CollectionNames.THEME]: {
+    TITLE: 'Theme',
+    LOWER: 'theme'
   }
 }
 
-export { commonResponse, responseCode, userResponse, eventTypeResponse }
+const getModelResponse = (model: CollectionNames) => {
+  return ({
+    error: {
+      DELETE: `Error on deleting the ${mappedResponse[model].LOWER}.`,
+      FETCH_ALL: `${mappedResponse[model].TITLE}s cannot be fetched at the moment.`,
+      FETCH_BY_ID: `${mappedResponse[model].TITLE} cannot be fetched at the moment.`,
+      INSERT: `Error on inserting new ${mappedResponse[model].LOWER}.`,
+      UPDATE: `Error on updating the ${mappedResponse[model].LOWER}.`,
+      NOT_FOUND: `${mappedResponse[model].TITLE} of provided id is not found in the system.`
+    },
+    success: {
+      DELETE: `${mappedResponse[model].TITLE} has been deleted successfully.`,
+      FETCH_ALL: `All ${mappedResponse[model].LOWER}s has been fetched successfully.`,
+      FETCH_BY_ID: `The ${mappedResponse[model].LOWER} has been fetched successfully.`,
+      INSERT: `New ${mappedResponse[model].LOWER} has been inserted successfully.`,
+      UPDATE: `${mappedResponse[model].TITLE} has been updated successfully.`
+    }
+  })
+}
+
+const eventTypeResponse = getModelResponse(CollectionNames.EVENT_TYPE)
+
+const themeResponse = getModelResponse(CollectionNames.THEME)
+
+export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse }
