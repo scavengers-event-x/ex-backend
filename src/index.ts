@@ -3,6 +3,10 @@ import { makeErrorObject } from './utils'
 import { commonResponse, responseCode } from './utils/constants'
 import { allRouter } from './app.route'
 
+app.use('/', (req, res) => {
+  res.send('Welcome to Event X api')
+})
+
 app.use('/api', allRouter)
 
 app.use((err, req, res, next) => {
