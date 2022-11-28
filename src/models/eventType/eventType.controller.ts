@@ -5,8 +5,9 @@ import { FieldTypeEventType, FieldTypeEventTypeMain } from './eventType.types'
 import { commonResponse, eventTypeResponse, responseCode } from '../../utils/constants'
 
 const conFetchAllEventTypes = async (req, res, next) => {
+  const { searchValue } = req.query
   try {
-    const eventTypes = await eventTypeQuery.fetchAllEventTypes()
+    const eventTypes = await eventTypeQuery.fetchAllEventTypes(searchValue)
     res.status(responseCode.OK)
       .send(makeSuccessObject<FieldTypeEventTypeMain[]>(eventTypes, eventTypeResponse.success.FETCH_ALL))
   } catch (_err) {

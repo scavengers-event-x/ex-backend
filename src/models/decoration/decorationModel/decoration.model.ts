@@ -11,6 +11,10 @@ const decorationSchema = new Schema<IDecorationMain>({
   description: {
     type: String
   },
+  type: {
+    type: String,
+    required: true
+  },
   price: {
     type: Number,
     required: true

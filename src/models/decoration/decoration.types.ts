@@ -3,6 +3,7 @@ import { ObjectId } from 'mongoose'
 interface IDecoration {
   name: string,
   price: number,
+  type: string,
   description?: string,
   available?: boolean,
 }

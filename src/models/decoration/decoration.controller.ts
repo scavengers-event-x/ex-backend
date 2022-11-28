@@ -5,8 +5,9 @@ import { IDecoration, IDecorationMain } from './decoration.types'
 import { commonResponse, decorationResponse, responseCode } from '../../utils/constants'
 
 const conFetchAllDecorations = async (req, res, next) => {
+  const { type, searchValue } = req.query
   try {
-    const decorations = await decorationQuery.fetchAllDecorations()
+    const decorations = await decorationQuery.fetchAllDecorations(type, searchValue)
     res.status(responseCode.OK)
       .send(makeSuccessObject<IDecorationMain[]>(decorations, decorationResponse.success.FETCH_ALL))
   } catch (_err) {

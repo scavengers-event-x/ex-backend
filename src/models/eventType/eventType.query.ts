@@ -1,11 +1,14 @@
 import { ObjectId } from 'mongoose'
 
+import { getRegexObj } from '../../utils'
 import { EventTypeModel } from './eventTypeModel'
-import { FieldTypeEventType, FieldTypeEventTypeMain } from './eventType.types'
 import { COMMON_UN_PROJECTION } from '../../utils/constants'
+import { FieldTypeEventType, FieldTypeEventTypeMain } from './eventType.types'
 
-const fetchAllEventTypes = () => {
-  return EventTypeModel.find({ deleted: false }, { ...COMMON_UN_PROJECTION })
+const fetchAllEventTypes = (searchValue?: string) => {
+  const findObject = { deleted: false }
+  searchValue && Object.assign(findObject, { name: getRegexObj(searchValue) })
+  return EventTypeModel.find({ ...findObject }, { ...COMMON_UN_PROJECTION })
 }
 
 const fetchEventTypeById = (id: ObjectId) => {

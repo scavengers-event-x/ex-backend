@@ -17,8 +17,14 @@ interface IVenue {
   }[]
 }
 
+interface IBookedDate {
+  date: Date,
+  eventId: ObjectId
+}
+
 interface IVenueMain extends IVenue{
   _id: ObjectId,
+  bookedDates: IBookedDate[]
   verified: boolean,
   inContract: boolean,
   deleted: boolean

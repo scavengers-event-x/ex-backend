@@ -1,11 +1,15 @@
 import { ObjectId } from 'mongoose'
 
+import { getRegexObj } from '../../utils'
 import { DrinkModel } from './drinkModel'
-import { IDrink, IDrinkMain } from './drink.types'
 import { COMMON_UN_PROJECTION } from '../../utils/constants'
+import { EDrinkCategory, IDrink, IDrinkMain } from './drink.types'
 
-const fetchAllDrinks = () => {
-  return DrinkModel.find({ deleted: false }, { ...COMMON_UN_PROJECTION })
+const fetchAllDrinks = (category?: EDrinkCategory, searchValue?: string) => {
+  const findObject = { deleted: false }
+  category && Object.assign(findObject, { category })
+  searchValue && Object.assign(findObject, { name: getRegexObj(searchValue) })
+  return DrinkModel.find({ ...findObject }, { ...COMMON_UN_PROJECTION })
 }
 
 const fetchAllAvailableDrinks = () => {

@@ -1,11 +1,15 @@
 import { ObjectId } from 'mongoose'
 
+import { getRegexObj } from '../../utils'
 import { DecorationModel } from './decorationModel'
 import { COMMON_UN_PROJECTION } from '../../utils/constants'
 import { IDecoration, IDecorationMain } from './decoration.types'
 
-const fetchAllDecorations = () => {
-  return DecorationModel.find({ deleted: false }, { ...COMMON_UN_PROJECTION })
+const fetchAllDecorations = (type?: string, searchValue?: string) => {
+  const findObject = { deleted: false }
+  type && Object.assign(findObject, { type })
+  searchValue && Object.assign(findObject, { name: getRegexObj(searchValue) })
+  return DecorationModel.find({ ...findObject }, { ...COMMON_UN_PROJECTION })
 }
 
 const fetchAllAvailableDecorations = () => {

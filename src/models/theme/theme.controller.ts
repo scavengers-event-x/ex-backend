@@ -5,8 +5,9 @@ import { ITheme, IThemeMain } from './theme.types'
 import { commonResponse, themeResponse, responseCode } from '../../utils/constants'
 
 const conFetchAllThemes = async (req, res, next) => {
+  const { searchValue } = req.query
   try {
-    const themes = await themeQuery.fetchAllThemes()
+    const themes = await themeQuery.fetchAllThemes(searchValue)
     res.status(responseCode.OK)
       .send(makeSuccessObject<IThemeMain[]>(themes, themeResponse.success.FETCH_ALL))
   } catch (_err) {

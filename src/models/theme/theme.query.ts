@@ -1,11 +1,14 @@
 import { ObjectId } from 'mongoose'
 
+import { getRegexObj } from '../../utils'
 import { ThemeModel } from './themeModel'
 import { ITheme, IThemeMain } from './theme.types'
 import { COMMON_UN_PROJECTION } from '../../utils/constants'
 
-const fetchAllThemes = () => {
-  return ThemeModel.find({ deleted: false }, { ...COMMON_UN_PROJECTION })
+const fetchAllThemes = (searchValue?: string) => {
+  const findObject = { deleted: false }
+  searchValue && Object.assign(findObject, { name: getRegexObj(searchValue) })
+  return ThemeModel.find({ ...findObject }, { ...COMMON_UN_PROJECTION })
 }
 
 const fetchThemeById = (id: ObjectId) => {

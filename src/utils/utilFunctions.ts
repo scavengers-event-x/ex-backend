@@ -1,6 +1,6 @@
 import { OTP_EXPIRY_REGISTER } from './constants'
 import { FieldTypeOTP } from '../models'
-import { FunctionWithNoParamButReturn, FunctionWithParamAndReturn } from './genericTypes'
+import { FunctionWithNoParamButReturn, FunctionWithParamAndReturn, GenericObject } from './genericTypes'
 
 const generateDisplayEmail:FunctionWithParamAndReturn<string, string> = username => {
   const atIndex = username.indexOf('@')
@@ -42,11 +42,16 @@ const generateOTPCode:FunctionWithNoParamButReturn<FieldTypeOTP> = () => {
   }
 }
 
+const getRegexObj = (value: string): GenericObject<string> => {
+  return ({ $regex: `(?i)${value}(?-i)` })
+}
+
 export {
   capitalizeFirstLetterOfEachWord,
   generateDisplayEmail,
   getDateAndTime,
   getYearList,
   generateOTPCode,
-  isNumber
+  isNumber,
+  getRegexObj
 }

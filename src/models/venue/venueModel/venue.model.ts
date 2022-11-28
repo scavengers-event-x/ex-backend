@@ -29,6 +29,13 @@ const venueSchema = new Schema<IVenueMain>({
     },
     amount: { type: Number, required: true }
   }],
+  bookedDates: [{
+    date: Date,
+    eventId: {
+      type: Schema.Types.ObjectId,
+      ref: CollectionNames.EVENT
+    }
+  }],
   deleted: { type: Boolean, default: false }
 }, { strict: true, timestamps: { createdAt: true, updatedAt: 'modifiedAt' } })
 

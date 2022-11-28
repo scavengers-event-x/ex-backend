@@ -5,8 +5,9 @@ import { IDrink, IDrinkMain } from './drink.types'
 import { commonResponse, drinkResponse, responseCode } from '../../utils/constants'
 
 const conFetchAllDrinks = async (req, res, next) => {
+  const { category, searchValue } = req.query
   try {
-    const drinks = await drinkQuery.fetchAllDrinks()
+    const drinks = await drinkQuery.fetchAllDrinks(category, searchValue)
     res.status(responseCode.OK)
       .send(makeSuccessObject<IDrinkMain[]>(drinks, drinkResponse.success.FETCH_ALL))
   } catch (_err) {
