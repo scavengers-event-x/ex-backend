@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongoose'
+import { IImageBody } from '../../utils'
 
 export enum EDrinkCategory {
   WHISKEY= 'WHISKEY',
@@ -18,6 +19,7 @@ interface IDrink {
   category: EDrinkCategory
   description?: string,
   available?: boolean,
+  image?: IImageBody
 }
 
 interface IDrinkMain extends IDrink{

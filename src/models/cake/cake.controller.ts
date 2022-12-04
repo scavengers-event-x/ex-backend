@@ -61,7 +61,7 @@ const conUpdateCake = async (req, res, next) => {
     if (!cakeInSystem.length) {
       return next({ message: cakeResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
-    await destroyImage(cakeInSystem[0].image.public_id)
+    if (cakeInSystem[0].image.public_id) { await destroyImage(cakeInSystem[0].image.public_id) }
     const updatedCake = await cakeQuery.updateCake(cakeId, getBodyWithFileUrl(mappedCake, fileDetail))
     if (updatedCake) {
       res.status(responseCode.ACCEPTED).send(makeSuccessObject<ICake>(updatedCake, cakeResponse.success.UPDATE))

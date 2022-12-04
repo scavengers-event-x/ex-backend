@@ -1,8 +1,11 @@
-import { makeSuccessObject } from '../../utils'
+import { UploadApiResponse } from 'cloudinary'
+
 import * as drinkQuery from './drink.query'
 import { drinkMapping } from './drinkModel'
 import { IDrink, IDrinkMain } from './drink.types'
-import { commonResponse, drinkResponse, responseCode } from '../../utils/constants'
+import { destroyImage, uploadImage } from '../../middleware'
+import { ECloudFolderName, getBodyWithFileUrl, makeSuccessObject, Nullable } from '../../utils'
+import { commonResponse, drinkResponse, fileResponse, responseCode } from '../../utils/constants'
 
 const conFetchAllDrinks = async (req, res, next) => {
   const { category, searchValue, imported, alcoholic } = req.query
@@ -49,12 +52,20 @@ const conUpdateDrink = async (req, res, next) => {
     return next({ message: drinkResponse.error.UPDATE, status: responseCode.BAD_REQUEST })
   }
 
+  let fileDetail:Nullable<UploadApiResponse> = null
   try {
+    if (req.file.path) {
+      fileDetail = await uploadImage(req.file.path, ECloudFolderName.DRINK)
+      if (!fileDetail) {
+        return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
+      }
+    }
     const drinkInSystem = await drinkQuery.fetchDrinkById(drinkId)
     if (!drinkInSystem.length) {
       return next({ message: drinkResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
-    const updatedDrink = await drinkQuery.updateDrink(drinkId, mappedDrink)
+    if (drinkInSystem[0].image.public_id) { await destroyImage(drinkInSystem[0].image.public_id) }
+    const updatedDrink = await drinkQuery.updateDrink(drinkId, getBodyWithFileUrl(mappedDrink, fileDetail))
     if (updatedDrink) {
       res.status(responseCode.ACCEPTED).send(makeSuccessObject<IDrink>(updatedDrink, drinkResponse.success.UPDATE))
     }
@@ -68,8 +79,16 @@ const conInsertNewDrink = async (req, res, next) => {
   if (!name || !price) {
     return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.BAD_REQUEST })
   }
+  let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    const insertRes = await drinkQuery.insertDrink({ name, price, ...remainingBody })
+    if (req.file.path) {
+      fileDetail = await uploadImage(req.file.path, ECloudFolderName.DRINK)
+      if (!fileDetail) {
+        return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
+      }
+    }
+
+    const insertRes = await drinkQuery.insertDrink(getBodyWithFileUrl({ name, price, ...remainingBody }, fileDetail))
     if (insertRes) {
       const response = await drinkQuery.fetchDrinkById(insertRes._id)
       res.status(response ? responseCode.OK : responseCode.INTERNAL_SERVER)

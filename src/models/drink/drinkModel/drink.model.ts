@@ -23,6 +23,10 @@ const drinkSchema = new Schema<IDrinkMain>({
     type: Boolean,
     default: false
   },
+  image: {
+    url: { type: String },
+    public_id: { type: String }
+  },
   category: {
     type: String,
     enum: [...Object.values(EDrinkCategory)]

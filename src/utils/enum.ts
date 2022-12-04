@@ -5,5 +5,6 @@ export enum UploadPath{
 
 export enum ECloudFolderName {
     CAKE = 'cake',
-    DECORATION = 'decoration'
+    DECORATION = 'decoration',
+    DRINK = 'drink'
 }
