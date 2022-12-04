@@ -5,7 +5,6 @@ import { ICake, ICakeMain } from './cake.types'
 import { cakeResponse, commonResponse, fileResponse, responseCode } from '../../utils/constants'
 import { destroyImage, uploadImage } from '../../middleware'
 import { UploadApiResponse } from 'cloudinary'
-import { Error } from 'mongoose'
 
 const conFetchAllCakes = async (req, res, next) => {
   try {
@@ -82,7 +81,7 @@ const conInsertNewCake = async (req, res, next) => {
     if (req.file.path) {
       fileDetail = await uploadImage(req.file.path, ECloudFolderName.CAKE)
       if (!fileDetail) {
-        throw new Error(fileResponse.error.UPLOAD)
+        return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
       }
     }
 

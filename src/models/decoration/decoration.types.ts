@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongoose'
+import { IImageBody } from '../../utils'
 
 interface IDecoration {
   name: string,
@@ -6,6 +7,7 @@ interface IDecoration {
   type: string,
   description?: string,
   available?: boolean,
+  image?: IImageBody
 }
 
 interface IDecorationMain extends IDecoration{

@@ -23,6 +23,10 @@ const decorationSchema = new Schema<IDecorationMain>({
     type: Boolean,
     default: true
   },
+  image: {
+    url: { type: String },
+    public_id: { type: String }
+  },
   deleted: { type: Boolean, default: false }
 }, { strict: true, timestamps: { createdAt: true, updatedAt: 'modifiedAt' } })
 
