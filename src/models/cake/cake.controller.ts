@@ -1,8 +1,11 @@
-import { makeSuccessObject } from '../../utils'
+import { ECloudFolderName, getBodyWithFileUrl, makeSuccessObject, Nullable } from '../../utils'
 import * as cakeQuery from './cake.query'
 import { cakeMapping } from './cakeModel'
 import { ICake, ICakeMain } from './cake.types'
-import { commonResponse, cakeResponse, responseCode } from '../../utils/constants'
+import { cakeResponse, commonResponse, fileResponse, responseCode } from '../../utils/constants'
+import { destroyImage, uploadImage } from '../../middleware'
+import { UploadApiResponse } from 'cloudinary'
+import { Error } from 'mongoose'
 
 const conFetchAllCakes = async (req, res, next) => {
   try {
@@ -47,13 +50,20 @@ const conUpdateCake = async (req, res, next) => {
   if (!mappedCake) {
     return next({ message: cakeResponse.error.UPDATE, status: responseCode.BAD_REQUEST })
   }
-
+  let fileDetail:Nullable<UploadApiResponse> = null
   try {
+    if (req.file.path) {
+      fileDetail = await uploadImage(req.file.path, ECloudFolderName.CAKE)
+      if (!fileDetail) {
+        return next({ message: fileResponse.error.UPLOAD, status: responseCode.BAD_REQUEST })
+      }
+    }
     const cakeInSystem = await cakeQuery.fetchCakeById(cakeId)
     if (!cakeInSystem.length) {
       return next({ message: cakeResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
-    const updatedCake = await cakeQuery.updateCake(cakeId, mappedCake)
+    await destroyImage(cakeInSystem[0].image.public_id)
+    const updatedCake = await cakeQuery.updateCake(cakeId, getBodyWithFileUrl(mappedCake, fileDetail))
     if (updatedCake) {
       res.status(responseCode.ACCEPTED).send(makeSuccessObject<ICake>(updatedCake, cakeResponse.success.UPDATE))
     }
@@ -67,8 +77,16 @@ const conInsertNewCake = async (req, res, next) => {
   if (!name || !price) {
     return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.BAD_REQUEST })
   }
+  let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    const insertRes = await cakeQuery.insertCake({ name, price, ...remainingBody })
+    if (req.file.path) {
+      fileDetail = await uploadImage(req.file.path, ECloudFolderName.CAKE)
+      if (!fileDetail) {
+        throw new Error(fileResponse.error.UPLOAD)
+      }
+    }
+
+    const insertRes = await cakeQuery.insertCake(getBodyWithFileUrl({ name, price, ...remainingBody }, fileDetail))
     if (insertRes) {
       const response = await cakeQuery.fetchCakeById(insertRes._id)
       res.status(response ? responseCode.OK : responseCode.INTERNAL_SERVER)

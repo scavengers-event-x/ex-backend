@@ -1,5 +1,5 @@
 import cors from 'cors'
-import express, {Express, RequestHandler} from 'express'
+import express, { Express, RequestHandler } from 'express'
 
 import { envVars } from './vars'
 

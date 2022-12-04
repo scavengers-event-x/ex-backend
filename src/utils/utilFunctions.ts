@@ -1,6 +1,7 @@
 import { OTP_EXPIRY_REGISTER } from './constants'
 import { FieldTypeOTP } from '../models'
-import { FunctionWithNoParamButReturn, FunctionWithParamAndReturn, GenericObject } from './genericTypes'
+import { FunctionWithNoParamButReturn, FunctionWithParamAndReturn, GenericObject, IImageBody } from './genericTypes'
+import { UploadApiResponse } from 'cloudinary'
 
 const generateDisplayEmail:FunctionWithParamAndReturn<string, string> = username => {
   const atIndex = username.indexOf('@')
@@ -46,6 +47,13 @@ const getRegexObj = (value: string): GenericObject<string> => {
   return ({ $regex: `(?i)${value}(?-i)` })
 }
 
+const getBodyWithFileUrl = <T = unknown>(body: T, fileDetail: UploadApiResponse):T | T & { image: IImageBody } => {
+  if (!fileDetail) {
+    return body
+  }
+  return ({ ...body, image: { url: fileDetail.secure_url, public_id: fileDetail.public_id } })
+}
+
 export {
   capitalizeFirstLetterOfEachWord,
   generateDisplayEmail,
@@ -53,5 +61,6 @@ export {
   getYearList,
   generateOTPCode,
   isNumber,
-  getRegexObj
+  getRegexObj,
+  getBodyWithFileUrl
 }

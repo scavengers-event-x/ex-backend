@@ -1,6 +1,9 @@
 // Initializing configuration of server
 import './server'
 
+// Initializing configuration of cloudinary
+import './cloudinary'
+
 // Initiating configuration of database
 import './database'
 

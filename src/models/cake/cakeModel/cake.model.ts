@@ -19,6 +19,10 @@ const cakeSchema = new Schema<ICakeMain>({
     type: Boolean,
     default: true
   },
+  image: {
+    url: { type: String },
+    public_id: { type: String }
+  },
   deleted: { type: Boolean, default: false }
 }, { strict: true, timestamps: { createdAt: true, updatedAt: 'modifiedAt' } })
 

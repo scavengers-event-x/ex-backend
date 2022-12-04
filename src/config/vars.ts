@@ -17,5 +17,8 @@ export const envVars = {
   MAILER_USER: process.env.MAILER_USER,
   MAILER_PASS: process.env.MAILER_PASS,
   MAILER_PORT: parseInt(process.env.MAILER_PORT),
-  MAILER_HOST: process.env.MAILER_HOST
+  MAILER_HOST: process.env.MAILER_HOST,
+  CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET
 }

@@ -51,3 +51,8 @@ interface TypedSend<T> extends Send {
 export interface TypedResponse<ResBody> extends Express.Response {
   json: TypedSend<ResBody>;
 }
+
+export interface IImageBody {
+  url: string,
+  public_id: string
+}

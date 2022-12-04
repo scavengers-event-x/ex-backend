@@ -1,5 +1,5 @@
-import {generateDisplayEmail} from '../utilFunctions'
-import {CollectionNames} from '../../config'
+import { CollectionNames } from '../../config'
+import { generateDisplayEmail } from '../utilFunctions'
 
 const responseCode = {
   ACCEPTED: 202,
@@ -134,4 +134,10 @@ const decorationResponse = getModelResponse(CollectionNames.DECORATION)
 
 const drinkResponse = getModelResponse(CollectionNames.DRINK)
 
-export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse, venueResponse, cakeResponse, decorationResponse, drinkResponse }
+const fileResponse = {
+  error: {
+    UPLOAD: 'Error uploading file to cloud.'
+  }
+}
+
+export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse, venueResponse, cakeResponse, decorationResponse, drinkResponse, fileResponse }
