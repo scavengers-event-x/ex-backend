@@ -5,9 +5,11 @@ import { DrinkModel } from './drinkModel'
 import { COMMON_UN_PROJECTION } from '../../utils/constants'
 import { EDrinkCategory, IDrink, IDrinkMain } from './drink.types'
 
-const fetchAllDrinks = (category?: EDrinkCategory, searchValue?: string) => {
+const fetchAllDrinks = (category?: EDrinkCategory, searchValue?: string, imported?: boolean, alcoholic?: boolean) => {
   const findObject = { deleted: false }
   category && Object.assign(findObject, { category })
+  imported && Object.assign(findObject, { imported })
+  alcoholic && Object.assign(findObject, { alcoholic })
   searchValue && Object.assign(findObject, { name: getRegexObj(searchValue) })
   return DrinkModel.find({ ...findObject }, { ...COMMON_UN_PROJECTION })
 }

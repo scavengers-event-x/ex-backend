@@ -19,6 +19,10 @@ const drinkSchema = new Schema<IDrinkMain>({
     type: Boolean,
     required: true
   },
+  imported: {
+    type: Boolean,
+    default: false
+  },
   category: {
     type: String,
     enum: [...Object.values(EDrinkCategory)]

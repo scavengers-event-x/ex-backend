@@ -6,13 +6,15 @@ export enum EDrinkCategory {
   RUM= 'RUM',
   VODKA= 'VODKA',
   WINE= 'WINE',
-  SOFT= 'SOFT'
+  SOFT= 'SOFT',
+  GIN= 'GIN'
 }
 
 interface IDrink {
   name: string,
   price: number,
   alcoholic: boolean,
+  imported: boolean,
   category: EDrinkCategory
   description?: string,
   available?: boolean,

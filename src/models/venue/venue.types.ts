@@ -1,5 +1,12 @@
 import { ObjectId } from 'mongoose'
 
+enum EVenueType {
+  BANQUET = 'BANQUET',
+  PARTY_PALACE = 'PARTY_PALACE',
+  RESTAURANT = 'RESTAURANT',
+  HOTEL = 'HOTEL'
+}
+
 interface IVenue {
   name: string,
   location: string,
@@ -14,7 +21,16 @@ interface IVenue {
       to: number,
     },
     amount: number
-  }[]
+  }[],
+  remarks?: string[],
+  established?: number,
+  spaceIndoor?: boolean,
+  spaceOutdoor?: boolean,
+  venueType?: EVenueType,
+  additionalService?: {
+    dj?: number,
+    spaceOnly?: number
+  }
 }
 
 interface IBookedDate {
@@ -32,5 +48,6 @@ interface IVenueMain extends IVenue{
 
 export {
   IVenue,
-  IVenueMain
+  IVenueMain,
+  EVenueType
 }

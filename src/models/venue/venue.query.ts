@@ -1,13 +1,16 @@
-import {ObjectId, Schema} from 'mongoose'
+import { ObjectId } from 'mongoose'
 
 import { VenueModel } from './venueModel'
 import { getRegexObj } from '../../utils'
-import { IVenue, IVenueMain } from './venue.types'
+import { EVenueType, IVenue, IVenueMain } from './venue.types'
 import { COMMON_UN_PROJECTION } from '../../utils/constants'
 
-const fetchAllVenues = (searchValue?: string, expectedPeople?: number, eventDate?: Date) => {
+const fetchAllVenues = (searchValue?: string, expectedPeople?: string, eventDate?: Date, spaceIndoor?: string, spaceOutdoor?: string, venueType?: EVenueType) => {
   const findObject = { deleted: false }
   searchValue && Object.assign(findObject, { name: getRegexObj(searchValue) })
+  spaceIndoor && Object.assign(findObject, { spaceIndoor })
+  spaceOutdoor && Object.assign(findObject, { spaceOutdoor })
+  venueType && Object.assign(findObject, { venueType })
   expectedPeople && Object.assign(findObject, { $and: [{ 'capacity.max': { $gte: expectedPeople } }, { 'capacity.min': { $lte: expectedPeople } }] })
   eventDate && Object.assign(findObject, { 'bookedDates.date': { $ne: new Date(eventDate).toISOString() } })
 

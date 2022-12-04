@@ -1,7 +1,7 @@
 import { Model, model, Schema } from 'mongoose'
 
 import { CollectionNames } from '../../../config'
-import { IVenueMain } from '../venue.types'
+import { EVenueType, IVenueMain } from '../venue.types'
 
 const venueSchema = new Schema<IVenueMain>({
   name: {
@@ -29,6 +29,15 @@ const venueSchema = new Schema<IVenueMain>({
     },
     amount: { type: Number, required: true }
   }],
+  remarks: { type: [String] },
+  established: { type: Number },
+  spaceIndoor: { type: Boolean, default: true },
+  spaceOutdoor: { type: Boolean, default: true },
+  venueType: { type: String, enum: [...Object.values(EVenueType)] },
+  additionalService: {
+    dj: { type: Number },
+    spaceOnly: { type: Number }
+  },
   bookedDates: [{
     date: Date,
     eventId: {

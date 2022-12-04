@@ -5,9 +5,10 @@ import { IVenue, IVenueMain } from './venue.types'
 import { commonResponse, venueResponse, responseCode } from '../../utils/constants'
 
 const conFetchAllVenues = async (req, res, next) => {
-  const { searchValue, expectedPeople, eventDate } = req.query
+  const { searchValue, expectedPeople, eventDate, spaceIndoor, spaceOutdoor, venueType } = req.query
+  console.log('spaceOutdoor: ', spaceOutdoor)
   try {
-    const venues = await venueQuery.fetchAllVenues(searchValue, expectedPeople, eventDate)
+    const venues = await venueQuery.fetchAllVenues(searchValue, expectedPeople, eventDate, spaceIndoor, spaceOutdoor, venueType)
     res.status(responseCode.OK)
       .send(makeSuccessObject<IVenueMain[]>(venues, venueResponse.success.FETCH_ALL))
   } catch (_err) {
