@@ -45,6 +45,10 @@ const venueSchema = new Schema<IVenueMain>({
       ref: CollectionNames.EVENT
     }
   }],
+  image: {
+    url: { type: String },
+    public_id: { type: String }
+  },
   deleted: { type: Boolean, default: false }
 }, { strict: true, timestamps: { createdAt: true, updatedAt: 'modifiedAt' } })
 

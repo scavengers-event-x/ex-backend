@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongoose'
+import { IImageBody } from '../../utils'
 
 enum EVenueType {
   BANQUET = 'BANQUET',
@@ -30,7 +31,8 @@ interface IVenue {
   additionalService?: {
     dj?: number,
     spaceOnly?: number
-  }
+  },
+  image?: IImageBody
 }
 
 interface IBookedDate {

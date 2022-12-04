@@ -1,8 +1,10 @@
-import { makeSuccessObject } from '../../utils'
+import { ECloudFolderName, getBodyWithFileUrl, makeSuccessObject, Nullable } from '../../utils'
 import * as venueQuery from './venue.query'
 import { venueMapping } from './venueModel'
 import { IVenue, IVenueMain } from './venue.types'
-import { commonResponse, venueResponse, responseCode } from '../../utils/constants'
+import { commonResponse, venueResponse, responseCode, fileResponse } from '../../utils/constants'
+import { UploadApiResponse } from 'cloudinary'
+import { destroyImage, uploadImage } from '../../middleware'
 
 const conFetchAllVenues = async (req, res, next) => {
   const { searchValue, expectedPeople, eventDate, spaceIndoor, spaceOutdoor, venueType } = req.query
@@ -40,12 +42,20 @@ const conUpdateVenue = async (req, res, next) => {
     return next({ message: venueResponse.error.UPDATE, status: responseCode.BAD_REQUEST })
   }
 
+  let fileDetail:Nullable<UploadApiResponse> = null
   try {
+    if (req.file.path) {
+      fileDetail = await uploadImage(req.file.path, ECloudFolderName.VENUE)
+      if (!fileDetail) {
+        return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
+      }
+    }
     const venueInSystem = await venueQuery.fetchVenueById(venueId)
     if (!venueInSystem.length) {
       return next({ message: venueResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
-    const updatedVenue = await venueQuery.updateVenue(venueId, mappedVenue)
+    if (venueInSystem[0].image.public_id) { await destroyImage(venueInSystem[0].image.public_id) }
+    const updatedVenue = await venueQuery.updateVenue(venueId, getBodyWithFileUrl(mappedVenue, fileDetail))
     if (updatedVenue) {
       res.status(responseCode.ACCEPTED).send(makeSuccessObject<IVenue>(updatedVenue, venueResponse.success.UPDATE))
     }
@@ -59,8 +69,15 @@ const conInsertNewVenue = async (req, res, next) => {
   if (!name || !capacity) {
     return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.BAD_REQUEST })
   }
+  let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    const insertRes = await venueQuery.insertVenue({ name, capacity, contact, location, ...remainingBody })
+    if (req.file.path) {
+      fileDetail = await uploadImage(req.file.path, ECloudFolderName.VENUE)
+      if (!fileDetail) {
+        return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
+      }
+    }
+    const insertRes = await venueQuery.insertVenue(getBodyWithFileUrl({ name, capacity, contact, location, ...remainingBody }, fileDetail))
     if (insertRes) {
       const response = await venueQuery.fetchVenueById(insertRes._id)
       res.status(response ? responseCode.OK : responseCode.INTERNAL_SERVER)

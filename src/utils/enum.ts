@@ -7,5 +7,6 @@ export enum ECloudFolderName {
     CAKE = 'cake',
     DECORATION = 'decoration',
     DRINK = 'drink',
-    THEME = 'theme'
+    THEME = 'theme',
+    VENUE = 'venue'
 }
