@@ -1,8 +1,10 @@
-import { makeSuccessObject } from '../../utils'
+import { ECloudFolderName, getBodyWithFileUrl, makeSuccessObject, Nullable } from '../../utils'
 import * as themeQuery from './theme.query'
 import { themeMapping } from './themeModel'
 import { ITheme, IThemeMain } from './theme.types'
-import { commonResponse, themeResponse, responseCode } from '../../utils/constants'
+import { commonResponse, themeResponse, responseCode, fileResponse } from '../../utils/constants'
+import { UploadApiResponse } from 'cloudinary'
+import { destroyImage, uploadImage } from '../../middleware'
 
 const conFetchAllThemes = async (req, res, next) => {
   const { searchValue } = req.query
@@ -39,12 +41,20 @@ const conUpdateTheme = async (req, res, next) => {
     return next({ message: themeResponse.error.UPDATE, status: responseCode.BAD_REQUEST })
   }
 
+  let fileDetail:Nullable<UploadApiResponse> = null
   try {
+    if (req.file.path) {
+      fileDetail = await uploadImage(req.file.path, ECloudFolderName.THEME)
+      if (!fileDetail) {
+        return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
+      }
+    }
     const themeInSystem = await themeQuery.fetchThemeById(themeId)
     if (!themeInSystem.length) {
       return next({ message: themeResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
-    const updatedTheme = await themeQuery.updateTheme(themeId, mappedTheme)
+    if (themeInSystem[0].image.public_id) { await destroyImage(themeInSystem[0].image.public_id) }
+    const updatedTheme = await themeQuery.updateTheme(themeId, getBodyWithFileUrl(mappedTheme, fileDetail))
     if (updatedTheme) {
       res.status(responseCode.ACCEPTED).send(makeSuccessObject<ITheme>(updatedTheme, themeResponse.success.UPDATE))
     }
@@ -58,8 +68,15 @@ const conInsertNewTheme = async (req, res, next) => {
   if (!name || !speciality) {
     return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.BAD_REQUEST })
   }
+  let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    const insertRes = await themeQuery.insertTheme({ name, speciality, ...remainingBody })
+    if (req.file.path) {
+      fileDetail = await uploadImage(req.file.path, ECloudFolderName.THEME)
+      if (!fileDetail) {
+        return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
+      }
+    }
+    const insertRes = await themeQuery.insertTheme(getBodyWithFileUrl({ name, speciality, ...remainingBody }, fileDetail))
     if (insertRes) {
       const response = await themeQuery.fetchThemeById(insertRes._id)
       res.status(response ? responseCode.OK : responseCode.INTERNAL_SERVER)
