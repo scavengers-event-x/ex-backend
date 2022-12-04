@@ -78,7 +78,7 @@ const conRegisterNewUser = async (req, res, next) => {
       insertUser({ ...req.body, operation: UserOperations.REGISTER, otpCode: cryptOtp, otpExpiry, password: cryptPassword })
         .then((insertRes) => {
           if (insertRes) {
-            fetchUserById(res._id).then(user => {
+            fetchUserById(insertRes._id).then(user => {
               res.status(responseCode.CREATED).send(makeSuccessObject<FieldTypeUser>(user, `${userResponse.success.REGISTER} ${userResponse.success.OTP_SENT(user.email)}`))
             })
           }
