@@ -97,6 +97,10 @@ const mappedResponse = {
   [CollectionNames.DRINK]: {
     TITLE: 'Drink',
     LOWER: 'drink'
+  },
+  [CollectionNames.EVENT]: {
+    TITLE: 'Event',
+    LOWER: 'event'
   }
 }
 
@@ -134,10 +138,12 @@ const decorationResponse = getModelResponse(CollectionNames.DECORATION)
 
 const drinkResponse = getModelResponse(CollectionNames.DRINK)
 
+const eventResponse = getModelResponse(CollectionNames.EVENT)
+
 const fileResponse = {
   error: {
     UPLOAD: 'Error uploading file to cloud.'
   }
 }
 
-export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse, venueResponse, cakeResponse, decorationResponse, drinkResponse, fileResponse }
+export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse, venueResponse, cakeResponse, decorationResponse, drinkResponse, eventResponse, fileResponse }

@@ -1,6 +1,7 @@
 export * from './cake'
 export * from './user'
 export * from './theme'
+export * from './event'
 export * from './venue'
 export * from './drink'
 export * from './eventType'

@@ -1,6 +1,15 @@
 import { Router } from 'express'
 
-import { userRouter, eventTypeRouter, themeRouter, venueRouter, cakeRouter, decorationRouter, drinkRouter } from './models'
+import {
+  userRouter,
+  eventTypeRouter,
+  themeRouter,
+  venueRouter,
+  cakeRouter,
+  decorationRouter,
+  drinkRouter,
+  eventRouter
+} from './models'
 
 const router = Router()
 
@@ -10,6 +19,7 @@ router.use('/cake', cakeRouter)
 router.use('/theme', themeRouter)
 router.use('/venue', venueRouter)
 router.use('/drink', drinkRouter)
+router.use('/event', eventRouter)
 router.use('/decoration', decorationRouter)
 router.use('/event-type', eventTypeRouter)
 
