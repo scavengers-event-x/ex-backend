@@ -3,7 +3,6 @@ import { Router } from 'express'
 import {
   conChangePassword,
   conDeactivateUser,
-  conFetchAllUsers,
   conFetchLoggedInUser,
   conFetchUserByCategory,
   conFetchUserById,
@@ -18,9 +17,6 @@ import { authenticator } from '../../middleware'
 import { UserOperations } from './user.types'
 
 const router = Router()
-
-// UNSECURE
-router.get('/', conFetchAllUsers)
 
 router.post('/login', conLoginUser)
 
@@ -41,6 +37,7 @@ router.post('/reset-password', conResetPassword)
 // SECURED
 router.use(authenticator)
 
+// UNSECURE
 router.get('/profile', conFetchLoggedInUser)
 
 router.put('/change-password', conChangePassword)

@@ -45,7 +45,7 @@ const updateUser = (id: ObjectId, data) => {
 }
 
 const fetchUsersByCategory = (category: UserCategory) => {
-  return UserModel.find({ accountStatus: UserAccountStatus.ACTIVE, category }, { _id: 1, email: 1, image: 1, profile: 1 })
+  return UserModel.find({ category }, { _id: 1, email: 1, image: 1, profile: 1 })
 }
 
 export {

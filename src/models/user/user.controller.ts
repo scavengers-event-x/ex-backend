@@ -21,12 +21,7 @@ import {
   UserCategory,
   UserOperations
 } from './user.types'
-import {
-  OTP_EXPIRY_RESET_PASSWORD,
-  commonResponse,
-  responseCode,
-  userResponse
-} from '../../utils/constants'
+import { commonResponse, OTP_EXPIRY_RESET_PASSWORD, responseCode, userResponse } from '../../utils/constants'
 
 const conFetchAllUsers = async (req, res, next) => {
   try {
@@ -66,7 +61,7 @@ const conFetchUserById = async (req, res, next) => {
 }
 
 const conRegisterNewUser = async (req, res, next) => {
-  if (!req.body || !req.body.password || !req.body.email || !req.body.category || !req.body.profile) {
+  if (!req.body || !req.body.password || !req.body.email || req.body.category !== UserCategory.CUSTOMER || !req.body.profile) {
     return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.NOT_ACCEPTABLE })
   }
   const cryptPassword = await bcrypt.hash(req.body.password, BCRYPT_SALT_ROUNDS)
@@ -107,8 +102,11 @@ const conLoginUser = (req, res, next) => {
       if (!passwordVerified) {
         return next({ message: userResponse.error.LOGIN, status: responseCode.UNAUTHORIZED })
       }
+      if (user.accountStatus === UserAccountStatus.DE_ACTIVE) {
+        updateUser(user._id, { accountStatus: UserAccountStatus.ACTIVE })
+      }
       res.status(responseCode.OK)
-        .send(makeSuccessObject<{_id: ObjectId, token: string}>({ _id: user._id as ObjectId, token: generateJWT(user) }, userResponse.success.LOGIN))
+        .send(makeSuccessObject<{user: FieldTypeUser, token: string}>({ user, token: generateJWT(user) }, userResponse.success.LOGIN))
     })
     .catch(() => {
       next({ message: userResponse.error.LOGIN, status: responseCode.UNAUTHORIZED })
@@ -249,7 +247,7 @@ const conResetPassword = (req, res, next) => {
 
 const conFetchUserByCategory = async (req, res, next) => {
   const category = req.params.category
-  if (category !== UserCategory.CUSTOMER) {
+  if (category === UserCategory.MANAGER) {
     return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.BAD_REQUEST })
   }
   try {
