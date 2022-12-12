@@ -9,6 +9,8 @@ router.route('/')
   .get(eventController.conFetchAllEvents)
   .post(multerSingleImage(), eventController.conInsertNewEvent)
 
+router.get('/mine', eventController.conFetchAllEventsOfLoggedInUser)
+
 router.route('/:id')
   .get(eventController.conFetchEventById)
   .put(multerSingleImage(), eventController.conUpdateEvent)

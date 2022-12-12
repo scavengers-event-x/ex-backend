@@ -10,11 +10,14 @@ import {
   drinkRouter,
   eventRouter
 } from './models'
+import { authenticator } from './middleware'
 
 const router = Router()
 
 // UNSECURE
 router.use('/user', userRouter)
+
+router.use(authenticator)
 router.use('/cake', cakeRouter)
 router.use('/theme', themeRouter)
 router.use('/venue', venueRouter)

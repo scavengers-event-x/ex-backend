@@ -2,11 +2,24 @@ import * as eventQuery from './event.query'
 import { eventMapping } from './eventModel'
 import { makeSuccessObject } from '../../utils'
 import { IEvent, IEventMain } from './event.types'
-import { eventResponse, commonResponse, responseCode } from '../../utils/constants'
+import { commonResponse, eventResponse, responseCode } from '../../utils/constants'
+import { FieldTypeUserJWT, UserCategory } from '../user'
 
 const conFetchAllEvents = async (req, res, next) => {
   try {
     const events = await eventQuery.fetchAllEvents()
+    res.status(responseCode.OK)
+      .send(makeSuccessObject<IEventMain[]>(events, eventResponse.success.FETCH_ALL))
+  } catch (_err) {
+    next({ message: eventResponse.error.FETCH_ALL, status: responseCode.BAD_REQUEST })
+  }
+}
+
+const conFetchAllEventsOfLoggedInUser = async (req, res, next) => {
+  const { userId, category } = req.loggedInUser as FieldTypeUserJWT
+  const additionalFilter = category === UserCategory.CUSTOMER ? { userId } : category === UserCategory.STAFF ? { assignedStaff: userId } : {}
+  try {
+    const events = await eventQuery.fetchAllEventsOfUserId({ ...additionalFilter })
     res.status(responseCode.OK)
       .send(makeSuccessObject<IEventMain[]>(events, eventResponse.success.FETCH_ALL))
   } catch (_err) {
@@ -52,8 +65,9 @@ const conUpdateEvent = async (req, res, next) => {
 }
 
 const conInsertNewEvent = async (req, res, next) => {
+  const { userId } = req.loggedInUser as FieldTypeUserJWT
   try {
-    const insertRes = await eventQuery.insertEvent({ ...req.body })
+    const insertRes = await eventQuery.insertEvent({ ...req.body, userId })
     if (insertRes) {
       const response = await eventQuery.fetchEventById(insertRes._id)
       res.status(response ? responseCode.OK : responseCode.INTERNAL_SERVER)
@@ -84,4 +98,5 @@ export {
   conFetchEventById,
   conInsertNewEvent,
   conDeleteEvent,
+  conFetchAllEventsOfLoggedInUser
 }

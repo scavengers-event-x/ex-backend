@@ -18,6 +18,10 @@ interface IEvent {
 
 interface IEventMain extends IEvent{
   _id: ObjectId,
+  assignedStaff: ObjectId,
+  userId: ObjectId,
+  active: boolean,
+  completed: boolean,
   deleted: boolean
 }
 
