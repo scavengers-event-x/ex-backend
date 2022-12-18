@@ -2,7 +2,7 @@ import { UserModel } from '../models/user/userModel'
 import { FieldTypeUserJWT, UserCategory } from '../models/user/user.types'
 import { commonResponse, responseCode, userResponse } from '../utils/constants'
 
-const authorizerAdmin = (req, res, next) => {
+const authorizerManager = (req, res, next) => {
   const { userId } = req.loggedInUser as FieldTypeUserJWT
 
   UserModel.findById(userId)
@@ -20,4 +20,4 @@ const authorizerAdmin = (req, res, next) => {
     })
 }
 
-export { authorizerAdmin }
+export { authorizerManager }

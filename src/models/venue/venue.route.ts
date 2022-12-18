@@ -1,17 +1,11 @@
 import { Router } from 'express'
 
-import { multerSingleImage } from '../../middleware'
 import * as venueController from './venue.controller'
 
 const router = Router()
 
-router.route('/')
-  .get(venueController.conFetchAllVenues)
-  .post(multerSingleImage(), venueController.conInsertNewVenue)
+router.get('/', venueController.conFetchAllVenues)
 
-router.route('/:id')
-  .get(venueController.conFetchVenueById)
-  .put(multerSingleImage(), venueController.conUpdateVenue)
-  .delete(venueController.conDeleteVenue)
+router.get('/:id', venueController.conFetchVenueById)
 
 export { router as venueRouter }

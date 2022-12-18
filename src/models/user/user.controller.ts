@@ -1,5 +1,4 @@
 import * as bcrypt from 'bcrypt'
-import { ObjectId } from 'mongoose'
 
 import { userProfileMapping } from './userModel'
 import { BCRYPT_SALT_ROUNDS, mailer, prepareOtpMail } from '../../config'
@@ -85,6 +84,28 @@ const conRegisterNewUser = async (req, res, next) => {
     })
     .catch(() => {
       next({ message: userResponse.error.OTP_SENT(req.body.email), status: responseCode.BAD_REQUEST })
+    })
+}
+
+const conAddStaff = async (req, res, next) => {
+  if (!req.body || !req.body.email || req.body.category !== UserCategory.STAFF || !req.body.profile) {
+    return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.NOT_ACCEPTABLE })
+  }
+  const atIndex = req.body.email.findIndex('@')
+  console.log('pass: ', req.body.email.split(0, atIndex).concat('ex22'))
+  const cryptPassword = await bcrypt.hash(req.body.email.split(0, atIndex).concat('ex22'), BCRYPT_SALT_ROUNDS)
+
+  insertUser({ ...req.body, password: cryptPassword })
+    .then((insertRes) => {
+      if (insertRes) {
+        fetchUserById(insertRes._id).then(user => {
+          res.status(responseCode.CREATED).send(makeSuccessObject<FieldTypeUser>(user, `${userResponse.success.REGISTER} ${userResponse.success.OTP_SENT(user.email)}`))
+        })
+      }
+    })
+    .catch((err) => {
+      const duplicate = err?.message?.includes('duplicate')
+      next({ message: duplicate ? userResponse.error.ALREADY_REGISTERED : userResponse.error.REGISTER, status: responseCode.BAD_REQUEST })
     })
 }
 
@@ -301,5 +322,6 @@ export {
   conSendOTP,
   conResetPassword,
   conFetchUserById,
-  conChangePassword
+  conChangePassword,
+  conAddStaff
 }

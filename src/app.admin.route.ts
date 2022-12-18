@@ -1,7 +1,6 @@
 import { Router } from 'express'
 
 import {
-  userRouter,
   eventTypeRouter,
   themeRouter,
   venueRouter,
@@ -9,13 +8,14 @@ import {
   decorationRouter,
   drinkRouter,
   eventRouter,
+  userAdminRouter
 } from './models'
 import { authenticator } from './middleware'
 
 const router = Router()
 
 // UNSECURE
-router.use('/user', userRouter)
+router.use('/user', userAdminRouter)
 
 router.use(authenticator)
 router.use('/cake', cakeRouter)
@@ -28,4 +28,4 @@ router.use('/event-type', eventTypeRouter)
 
 // SECURE
 
-export { router as allRouter }
+export { router as allAdminRouter }
