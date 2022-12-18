@@ -46,8 +46,6 @@ router.put('/update', conUpdateUser)
 
 router.get('/deactivate', conDeactivateUser)
 
-router.get('/category/:category', conFetchUserByCategory)
-
 router.get('/:id', conFetchUserById)
 
 export { router as userRouter }
