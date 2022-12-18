@@ -1,12 +1,12 @@
 import { Router } from 'express'
 
 import {
-  eventTypeRouter,
-  themeRouter,
-  venueRouter,
-  cakeRouter,
-  decorationRouter,
-  drinkRouter,
+  eventTypeAdminRouter,
+  themeAdminRouter,
+  venueAdminRouter,
+  cakeAdminRouter,
+  decorationAdminRouter,
+  drinkAdminRouter,
   eventRouter,
   userAdminRouter
 } from './models'
@@ -18,13 +18,13 @@ const router = Router()
 router.use('/user', userAdminRouter)
 
 router.use(authenticator)
-router.use('/cake', cakeRouter)
-router.use('/theme', themeRouter)
-router.use('/venue', venueRouter)
-router.use('/drink', drinkRouter)
+router.use('/cake', cakeAdminRouter)
+router.use('/theme', themeAdminRouter)
+router.use('/venue', venueAdminRouter)
+router.use('/drink', drinkAdminRouter)
 router.use('/event', eventRouter)
-router.use('/decoration', decorationRouter)
-router.use('/event-type', eventTypeRouter)
+router.use('/decoration', decorationAdminRouter)
+router.use('/event-type', eventTypeAdminRouter)
 
 // SECURE
 
