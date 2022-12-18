@@ -17,18 +17,20 @@ router.post('/login', conLoginUser([UserCategory.STAFF, UserCategory.MANAGER]))
 
 router.use(authenticator)
 
-router.put('/access/:id', conToggleUserAccess)
-
-router.get('/staff-list', authorizerManager, conFetchUserByCategory(UserCategory.STAFF))
-
 router.get('/customer-list', conFetchUserByCategory(UserCategory.CUSTOMER))
-
-router.post('/add-staff', authorizerManager, conAddStaff)
 
 router.get('/profile', conFetchLoggedInUser)
 
 router.put('/change-password', conChangePassword)
 
 router.put('/update', conUpdateUser)
+
+router.use(authorizerManager)
+
+router.put('/access/:id', conToggleUserAccess)
+
+router.get('/staff-list', conFetchUserByCategory(UserCategory.STAFF))
+
+router.post('/add-staff', conAddStaff)
 
 export { router as userAdminRouter }
