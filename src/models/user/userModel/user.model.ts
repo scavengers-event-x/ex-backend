@@ -39,6 +39,10 @@ const userSchema = new Schema<FieldTypeUserMain>({
     required: true,
     type: String
   },
+  access: {
+    type: Boolean,
+    default: true
+  },
   profile: {
     address: {
       type: String

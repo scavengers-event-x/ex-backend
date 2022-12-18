@@ -39,6 +39,7 @@ interface FieldTypeUser {
   accountStatus: UserAccountStatus,
   profile: FieldTypeUserProfile,
   isVerified: boolean
+  access: boolean
   image?: string,
 }
 

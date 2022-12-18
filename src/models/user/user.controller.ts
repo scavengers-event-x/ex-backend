@@ -118,6 +118,9 @@ const conLoginUser = (apiUserCat: UserCategory[]) => (req, res, next) => {
       if (!user || !apiUserCat.includes(user.category)) {
         return next({ message: userResponse.error.LOGIN, status: responseCode.UNAUTHORIZED })
       }
+      if (!user.access) {
+        return next({ message: userResponse.error.NO_ACCESS, status: responseCode.UNAUTHORIZED })
+      }
       const passwordVerified = await bcrypt.compare(password, user.password)
       if (!passwordVerified) {
         return next({ message: userResponse.error.LOGIN, status: responseCode.UNAUTHORIZED })
@@ -157,6 +160,26 @@ const conDeactivateUser = (req, res, next) => {
     .then((user) => {
       res.status(responseCode.ACCEPTED).send(makeSuccessObject<FieldTypeUser>(user, userResponse.success.DEACTIVATION))
     })
+    .catch(() => {
+      next({ message: userResponse.error.DEACTIVATION, status: responseCode.BAD_REQUEST })
+    })
+}
+
+const conToggleUserAccess = (req, res, next) => {
+  const userId = req.params.id
+
+  fetchUserById(userId).then((user) => {
+    if (!user) {
+      return next({ message: userResponse.error.USER_NOT_FOUND, status: responseCode.BAD_REQUEST })
+    }
+    updateUser(userId, { access: !user.access })
+      .then((user) => {
+        res.status(responseCode.ACCEPTED).send(makeSuccessObject<FieldTypeUser>(user, !user.access ? userResponse.success.ACCESS_REVOKED : userResponse.success.ACCESS_GRANTED))
+      })
+      .catch(() => {
+        next({ message: !user.access ? userResponse.error.ACCESS_REVOKE : userResponse.error.ACCESS_GRANT, status: responseCode.BAD_REQUEST })
+      })
+  })
     .catch(() => {
       next({ message: userResponse.error.DEACTIVATION, status: responseCode.BAD_REQUEST })
     })
@@ -309,6 +332,7 @@ const conChangePassword = (req, res, next) => {
 }
 
 export {
+  conToggleUserAccess,
   conFetchAllUsers,
   conFetchUserByCategory,
   conFetchLoggedInUser,

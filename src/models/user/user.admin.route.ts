@@ -5,7 +5,7 @@ import {
   conChangePassword,
   conFetchLoggedInUser,
   conFetchUserByCategory,
-  conLoginUser,
+  conLoginUser, conToggleUserAccess,
   conUpdateUser
 } from './user.controller'
 import { authenticator, authorizerManager } from '../../middleware'
@@ -16,6 +16,8 @@ const router = Router()
 router.post('/login', conLoginUser([UserCategory.STAFF, UserCategory.MANAGER]))
 
 router.use(authenticator)
+
+router.put('/access/:id', conToggleUserAccess)
 
 router.get('/staff-list', authorizerManager, conFetchUserByCategory(UserCategory.STAFF))
 
