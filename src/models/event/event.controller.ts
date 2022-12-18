@@ -74,6 +74,7 @@ const conInsertNewEvent = async (req, res, next) => {
         .send(makeSuccessObject<IEvent>(response[0], eventResponse.success.INSERT))
     }
   } catch (_err) {
+    console.log('error: ', _err)
     next({ message: eventResponse.error.INSERT, status: responseCode.BAD_REQUEST })
   }
 }

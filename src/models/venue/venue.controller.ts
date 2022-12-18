@@ -8,7 +8,6 @@ import { destroyImage, uploadImage } from '../../middleware'
 
 const conFetchAllVenues = async (req, res, next) => {
   const { searchValue, expectedPeople, eventDate, spaceIndoor, spaceOutdoor, venueType } = req.query
-  console.log('spaceOutdoor: ', spaceOutdoor)
   try {
     const venues = await venueQuery.fetchAllVenues(searchValue, expectedPeople, eventDate, spaceIndoor, spaceOutdoor, venueType)
     res.status(responseCode.OK)

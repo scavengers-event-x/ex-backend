@@ -3,16 +3,16 @@ import { ObjectId } from 'mongoose'
 import { EventModel } from './eventModel'
 import { IEvent, IEventMain } from './event.types'
 import { COMMON_UN_PROJECTION } from '../../utils/constants'
-import { CollectionNames } from '../../config'
 
 const findOptions = {
   populate: [
-    CollectionNames.VENUE,
-    CollectionNames.THEME,
-    CollectionNames.USER,
-    CollectionNames.DRINK,
-    CollectionNames.CAKE,
-    CollectionNames.DECORATION
+    'venue',
+    'theme',
+    'userId',
+    'assignedStaff',
+    'drinks._id',
+    'cakes',
+    'decorations'
   ]
 }
 const fetchAllEvents = () => {

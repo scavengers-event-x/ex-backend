@@ -5,6 +5,11 @@ interface IEventDrink {
   quantity: number
 }
 
+interface IEventCake {
+  _id: ObjectId,
+  pound: number
+}
+
 interface IEvent {
   eventType: string,
   venue: ObjectId,
@@ -12,7 +17,7 @@ interface IEvent {
   numberOfPeople: number,
   theme?: ObjectId,
   drinks?: IEventDrink[]
-  cakes?: ObjectId[],
+  cakes?: IEventCake[],
   decorations?: ObjectId[],
 }
 
