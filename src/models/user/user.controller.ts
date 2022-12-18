@@ -265,8 +265,7 @@ const conResetPassword = (req, res, next) => {
   }
 }
 
-const conFetchUserByCategory = async (req, res, next) => {
-  const category = req.params.category
+const conFetchUserByCategory = (category: UserCategory) => async (req, res, next) => {
   if (category === UserCategory.MANAGER) {
     return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.BAD_REQUEST })
   }

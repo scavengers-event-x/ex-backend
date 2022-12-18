@@ -17,7 +17,9 @@ router.post('/login', conLoginUser([UserCategory.STAFF, UserCategory.MANAGER]))
 
 router.use(authenticator)
 
-router.get('/category/:category', conFetchUserByCategory)
+router.get('/staff-list', conFetchUserByCategory(UserCategory.STAFF))
+
+router.get('/customer-list', conFetchUserByCategory(UserCategory.CUSTOMER))
 
 router.post('/add-staff', authorizerManager, conAddStaff)
 
