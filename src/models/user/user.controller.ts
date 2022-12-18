@@ -91,9 +91,8 @@ const conAddStaff = async (req, res, next) => {
   if (!req.body || !req.body.email || req.body.category !== UserCategory.STAFF || !req.body.profile) {
     return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.NOT_ACCEPTABLE })
   }
-  const atIndex = req.body.email.findIndex('@')
-  console.log('pass: ', req.body.email.split(0, atIndex).concat('ex22'))
-  const cryptPassword = await bcrypt.hash(req.body.email.split(0, atIndex).concat('ex22'), BCRYPT_SALT_ROUNDS)
+  console.log('Password: ', req.body.email.split('@')[0].concat('ex22'))
+  const cryptPassword = await bcrypt.hash(req.body.email.split('@')[0].concat('@ex22'), BCRYPT_SALT_ROUNDS)
 
   insertUser({ ...req.body, password: cryptPassword })
     .then((insertRes) => {
