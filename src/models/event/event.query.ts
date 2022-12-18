@@ -36,12 +36,17 @@ const updateEvent = (id: ObjectId, data: IEvent) => {
   return EventModel.findByIdAndUpdate(id, { $set: data }, { projection: { ...COMMON_UN_PROJECTION }, returnDocument: 'after', returnOriginal: false, populate: findOptions.populate })
 }
 
+const assignStaffToEvent = (id: ObjectId, staffId: ObjectId) => {
+  return EventModel.findByIdAndUpdate(id, { $set: { assignedStaff: staffId } }, { projection: { ...COMMON_UN_PROJECTION }, returnDocument: 'after', returnOriginal: false, populate: findOptions.populate })
+}
+
 const deleteEvent = (id: ObjectId) => {
   return EventModel.findByIdAndUpdate(id, { $set: { deleted: true } }, { projection: { ...COMMON_UN_PROJECTION }, returnDocument: 'after', returnOriginal: false, populate: findOptions.populate })
 }
 
 export {
   fetchAllEventsOfUserId,
+  assignStaffToEvent,
   fetchAllEvents,
   fetchEventById,
   insertEvent,

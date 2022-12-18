@@ -19,6 +19,10 @@ interface IEvent {
   drinks?: IEventDrink[]
   cakes?: IEventCake[],
   decorations?: ObjectId[],
+  payment?: {
+    token: string,
+    idx: string
+  }
 }
 
 interface IEventMain extends IEvent{
@@ -27,7 +31,7 @@ interface IEventMain extends IEvent{
   userId: ObjectId,
   active: boolean,
   completed: boolean,
-  deleted: boolean
+  deleted: boolean,
 }
 
 export {

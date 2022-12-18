@@ -14,11 +14,11 @@ import {
   conVerifyOTP
 } from './user.controller'
 import { authenticator } from '../../middleware'
-import { UserOperations } from './user.types'
+import { UserCategory, UserOperations } from './user.types'
 
 const router = Router()
 
-router.post('/login', conLoginUser)
+router.post('/login', conLoginUser([UserCategory.CUSTOMER]))
 
 router.post('/register', conRegisterNewUser)
 

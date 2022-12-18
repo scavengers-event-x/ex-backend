@@ -98,24 +98,24 @@ const conAddStaff = async (req, res, next) => {
     .then((insertRes) => {
       if (insertRes) {
         fetchUserById(insertRes._id).then(user => {
-          res.status(responseCode.CREATED).send(makeSuccessObject<FieldTypeUser>(user, `${userResponse.success.REGISTER} ${userResponse.success.OTP_SENT(user.email)}`))
+          res.status(responseCode.CREATED).send(makeSuccessObject<FieldTypeUser>(user, userResponse.success.ADD_STAFF))
         })
       }
     })
     .catch((err) => {
       const duplicate = err?.message?.includes('duplicate')
-      next({ message: duplicate ? userResponse.error.ALREADY_REGISTERED : userResponse.error.REGISTER, status: responseCode.BAD_REQUEST })
+      next({ message: duplicate ? userResponse.error.ALREADY_REGISTERED : userResponse.error.ADD_STAFF, status: responseCode.BAD_REQUEST })
     })
 }
 
-const conLoginUser = (req, res, next) => {
+const conLoginUser = (apiUserCat: UserCategory[]) => (req, res, next) => {
   const { email, password } = req.body
   if (!email || !password) {
     return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.NOT_ACCEPTABLE })
   }
   fetchUserByKeyValue({ email })
     .then(async (user) => {
-      if (!user) {
+      if (!user || !apiUserCat.includes(user.category)) {
         return next({ message: userResponse.error.LOGIN, status: responseCode.UNAUTHORIZED })
       }
       const passwordVerified = await bcrypt.compare(password, user.password)

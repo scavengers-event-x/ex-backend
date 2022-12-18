@@ -22,6 +22,10 @@ const eventSchema = new Schema<IEventMain>({
     pound: Number
   }],
   decorations: [{ type: Schema.Types.ObjectId, ref: CollectionNames.DECORATION }],
+  payment: {
+    token: { type: String },
+    idx: { type: String }
+  },
   deleted: { type: Boolean, default: false }
 }, { strict: true, timestamps: { createdAt: true, updatedAt: 'modifiedAt' } })
 

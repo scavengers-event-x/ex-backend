@@ -2,6 +2,7 @@ import { Router } from 'express'
 
 import * as eventController from './event.controller'
 import { multerSingleImage } from '../../middleware'
+import { conAssignStaffToEvent } from './event.controller'
 
 const router = Router()
 
@@ -15,5 +16,7 @@ router.route('/:id')
   .get(eventController.conFetchEventById)
   .put(multerSingleImage(), eventController.conUpdateEvent)
   .delete(eventController.conDeleteEvent)
+
+router.put('/:id/assign', conAssignStaffToEvent)
 
 export { router as eventRouter }

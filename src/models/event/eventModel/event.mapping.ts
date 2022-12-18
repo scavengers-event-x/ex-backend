@@ -11,6 +11,10 @@ export const eventMapping = (data2: IEvent): IEvent => {
     if (data2.theme) data1.theme = data2.theme
     if (data2.drinks) data1.drinks = data2.drinks
     if (data2.venue) data1.venue = data2.venue
+    if (data2.payment) {
+      if (data2.payment.token) data1.payment = { ...data1.payment, token: data2.payment.token }
+      if (data2.payment.idx) data1.payment = { ...data1.payment, idx: data2.payment.idx }
+    }
   }
 
   return data1

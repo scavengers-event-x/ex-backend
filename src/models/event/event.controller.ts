@@ -2,7 +2,7 @@ import * as eventQuery from './event.query'
 import { eventMapping } from './eventModel'
 import { makeSuccessObject } from '../../utils'
 import { IEvent, IEventMain } from './event.types'
-import { commonResponse, eventResponse, responseCode } from '../../utils/constants'
+import { commonResponse, eventResponse, responseCode, userResponse } from '../../utils/constants'
 import { FieldTypeUserJWT, UserCategory } from '../user'
 
 const conFetchAllEvents = async (req, res, next) => {
@@ -64,6 +64,27 @@ const conUpdateEvent = async (req, res, next) => {
   }
 }
 
+const conAssignStaffToEvent = async (req, res, next) => {
+  const eventId = req.params.id
+  const { userId, category } = req.loggedInUser as FieldTypeUserJWT
+
+  if (!userId || category !== UserCategory.STAFF) {
+    return next({ message: userResponse.error.USER_NOT_FOUND, status: responseCode.BAD_REQUEST })
+  }
+  try {
+    const eventInSystem = await eventQuery.fetchEventById(eventId)
+    if (!eventInSystem.length) {
+      return next({ message: eventResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
+    }
+    const updatedEvent = await eventQuery.assignStaffToEvent(eventId, userId)
+    if (updatedEvent) {
+      res.status(responseCode.ACCEPTED).send(makeSuccessObject<IEvent>(updatedEvent, eventResponse.success.ASSIGN))
+    }
+  } catch (err) {
+    next({ message: eventResponse.error.ASSIGN, status: responseCode.BAD_REQUEST })
+  }
+}
+
 const conInsertNewEvent = async (req, res, next) => {
   const { userId } = req.loggedInUser as FieldTypeUserJWT
   try {
@@ -99,5 +120,6 @@ export {
   conFetchEventById,
   conInsertNewEvent,
   conDeleteEvent,
+  conAssignStaffToEvent,
   conFetchAllEventsOfLoggedInUser
 }
