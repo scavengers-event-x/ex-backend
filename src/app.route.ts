@@ -8,7 +8,7 @@ import {
   cakeRouter,
   decorationRouter,
   drinkRouter,
-  eventRouter,
+  eventRouter
 } from './models'
 import { authenticator } from './middleware'
 

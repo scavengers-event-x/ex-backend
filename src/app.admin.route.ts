@@ -10,7 +10,7 @@ import {
   eventRouter,
   userAdminRouter
 } from './models'
-import { authenticator } from './middleware'
+import { authenticator, authorizerManager } from './middleware'
 
 const router = Router()
 
@@ -18,11 +18,11 @@ const router = Router()
 router.use('/user', userAdminRouter)
 
 router.use(authenticator)
+router.use('/event', eventRouter)
 router.use('/cake', cakeAdminRouter)
 router.use('/theme', themeAdminRouter)
 router.use('/venue', venueAdminRouter)
 router.use('/drink', drinkAdminRouter)
-router.use('/event', eventRouter)
 router.use('/decoration', decorationAdminRouter)
 router.use('/event-type', eventTypeAdminRouter)
 

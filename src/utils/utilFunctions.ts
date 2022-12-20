@@ -1,7 +1,9 @@
-import { OTP_EXPIRY_REGISTER } from './constants'
-import { FieldTypeOTP } from '../models'
-import { FunctionWithNoParamButReturn, FunctionWithParamAndReturn, GenericObject, IImageBody } from './genericTypes'
+import { ObjectId, Types } from 'mongoose'
 import { UploadApiResponse } from 'cloudinary'
+
+import { FieldTypeOTP } from '../models'
+import { OTP_EXPIRY_REGISTER } from './constants'
+import { FunctionWithNoParamButReturn, FunctionWithParamAndReturn, GenericObject, IImageBody } from './genericTypes'
 
 const generateDisplayEmail:FunctionWithParamAndReturn<string, string> = username => {
   const atIndex = username.indexOf('@')
@@ -54,6 +56,11 @@ const getBodyWithFileUrl = <T = unknown>(body: T, fileDetail: UploadApiResponse)
   return ({ ...body, image: { url: fileDetail.secure_url, public_id: fileDetail.public_id } })
 }
 
+const getObjectId = (objectId: ObjectId):Types.ObjectId => {
+  const ObjectId = Types.ObjectId
+  return new ObjectId(objectId.toString())
+}
+
 export {
   capitalizeFirstLetterOfEachWord,
   generateDisplayEmail,
@@ -62,5 +69,6 @@ export {
   generateOTPCode,
   isNumber,
   getRegexObj,
+  getObjectId,
   getBodyWithFileUrl
 }

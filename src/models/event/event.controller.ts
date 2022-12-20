@@ -1,6 +1,6 @@
 import * as eventQuery from './event.query'
 import { eventMapping } from './eventModel'
-import { makeSuccessObject } from '../../utils'
+import {getObjectId, makeSuccessObject} from '../../utils'
 import { IEvent, IEventMain } from './event.types'
 import { commonResponse, eventResponse, responseCode, userResponse } from '../../utils/constants'
 import { FieldTypeUserJWT, UserCategory } from '../user'
@@ -17,7 +17,7 @@ const conFetchAllEvents = async (req, res, next) => {
 
 const conFetchAllEventsOfLoggedInUser = async (req, res, next) => {
   const { userId, category } = req.loggedInUser as FieldTypeUserJWT
-  const additionalFilter = category === UserCategory.CUSTOMER ? { userId } : category === UserCategory.STAFF ? { assignedStaff: userId } : {}
+  const additionalFilter = category === UserCategory.CUSTOMER ? { userId: userId } : category === UserCategory.STAFF ? { assignedStaff: userId } : {}
   try {
     const events = await eventQuery.fetchAllEventsOfUserId({ ...additionalFilter })
     res.status(responseCode.OK)

@@ -4,22 +4,34 @@ import { EventModel } from './eventModel'
 import { IEvent, IEventMain } from './event.types'
 import { COMMON_UN_PROJECTION } from '../../utils/constants'
 
+// const findOptions = {
+//   populate: [
+//     'theme',
+//     'venue',
+//     'userId',
+//     'assignedStaff',
+//     'drinks._id',
+//     'cakes',
+//     'decorations'
+//   ]
+// }
+
 const findOptions = {
   populate: [
-    'venue',
-    'theme',
-    'userId',
-    'assignedStaff',
-    'drinks._id',
-    'cakes',
-    'decorations'
+    { path: 'theme', select: '-_id name' },
+    { path: 'venue', select: '-_id name location' },
+    { path: 'userId', select: '-_id profile email' },
+    { path: 'assignedStaff', select: '-_id profile email' },
+    { path: 'drinks._id', select: '-_id name image.url' },
+    { path: 'cakes._id', select: '-_id name image.url' },
+    { path: 'decorations', select: '-_id name image.url' }
   ]
 }
 const fetchAllEvents = () => {
   return EventModel.find({ deleted: false }, { ...COMMON_UN_PROJECTION })
 }
-const fetchAllEventsOfUserId = ({ userId, assignedStaff }: {userId?: ObjectId, assignedStaff?: ObjectId}) => {
-  return EventModel.find({ deleted: false, userId, assignedStaff }, { ...COMMON_UN_PROJECTION }, { ...findOptions })
+const fetchAllEventsOfUserId = (additionalFields: {userId?: ObjectId, assignedStaff?: ObjectId}) => {
+  return EventModel.find({ deleted: false, ...additionalFields }, { ...COMMON_UN_PROJECTION }, { ...findOptions })
 }
 
 const fetchEventById = (id: ObjectId) => {
