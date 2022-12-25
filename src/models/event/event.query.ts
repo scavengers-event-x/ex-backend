@@ -22,9 +22,10 @@ const findOptions = {
     { path: 'venue', select: '-_id name location' },
     { path: 'userId', select: '-_id profile email' },
     { path: 'assignedStaff', select: '-_id profile email' },
-    { path: 'drinks._id', select: '-_id name image.url' },
-    { path: 'cakes._id', select: '-_id name image.url' },
-    { path: 'decorations', select: '-_id name image.url' }
+    { path: 'drinks._id', select: '-_id name price image.url' },
+    { path: 'cakes._id', select: '-_id name price image.url' },
+    { path: 'decorations', select: '-_id name price image.url' },
+    { path: 'eventType', select: '-_id name' }
   ]
 }
 const fetchAllEvents = () => {
