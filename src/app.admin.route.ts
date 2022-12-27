@@ -1,14 +1,14 @@
 import { Router } from 'express'
 
 import {
-  eventTypeAdminRouter,
   themeAdminRouter,
   venueAdminRouter,
   cakeAdminRouter,
   decorationAdminRouter,
   drinkAdminRouter,
   eventRouter,
-  userAdminRouter
+  userAdminRouter,
+  announcementAdminRouter
 } from './models'
 import { authenticator, authorizerManager } from './middleware'
 
@@ -19,12 +19,14 @@ router.use('/user', userAdminRouter)
 
 router.use(authenticator)
 router.use('/event', eventRouter)
+
+router.use(authorizerManager)
 router.use('/cake', cakeAdminRouter)
 router.use('/theme', themeAdminRouter)
 router.use('/venue', venueAdminRouter)
 router.use('/drink', drinkAdminRouter)
 router.use('/decoration', decorationAdminRouter)
-router.use('/event-type', eventTypeAdminRouter)
+router.use('/announcement', announcementAdminRouter)
 
 // SECURE
 

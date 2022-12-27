@@ -2,8 +2,8 @@ import * as mongoose from 'mongoose'
 import { describe, expect, it, beforeAll } from '@jest/globals'
 
 import { envVars } from '../../config'
-import { EventTypeModel } from './eventTypeModel'
-import { UserCategory } from './eventType.types'
+import { AnnouncementModel } from './announcementModel'
+import { UserCategory } from './announcement.types'
 
 // TESTING MONGO CONNECTION
 beforeAll(async () => {
@@ -16,7 +16,7 @@ describe('user schema test', () => {
   it('create new user', () => {
     const product = { category: UserCategory.CUSTOMER, email: 'abc@gmail.com', password: 'test@123', profile: { fullName: 'test user' } }
 
-    return EventTypeModel.create(product)
+    return AnnouncementModel.create(product)
       .then((user) => {
         expect(user.email).toEqual('abc@gmail.com')
       })
@@ -27,7 +27,7 @@ describe('user schema test', () => {
 
   // TESTING READ OPERATION
   it('get tested user', () => {
-    return EventTypeModel.findOne({ email: 'abc@gmail.com' })
+    return AnnouncementModel.findOne({ email: 'abc@gmail.com' })
       .then((data) => {
         userId = data._id
         expect(data.profile.fullName).toEqual('test user')
@@ -38,7 +38,7 @@ describe('user schema test', () => {
   it('update tested user', () => {
     const toUpdateData = { profile: { fullName: 'user testing' } }
 
-    return EventTypeModel.findByIdAndUpdate(userId, { $set: toUpdateData }, { returnDocument: 'after', returnOriginal: false })
+    return AnnouncementModel.findByIdAndUpdate(userId, { $set: toUpdateData }, { returnDocument: 'after', returnOriginal: false })
       .then((data) => {
         expect(data.profile.fullName).toEqual('user testing')
       })
@@ -46,7 +46,7 @@ describe('user schema test', () => {
 
   // TESTING DELETE OPERATION
   it('delete tested user', () => {
-    return EventTypeModel.deleteOne({ email: 'abc@gmail.com' })
+    return AnnouncementModel.deleteOne({ email: 'abc@gmail.com' })
       .then((data) => {
         expect(data.deletedCount).toEqual(1)
       })

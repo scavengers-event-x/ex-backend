@@ -1,6 +1,6 @@
 enum CollectionNames {
     USER= 'userdbs',
-    EVENT_TYPE= 'eventTypedbs',
+    ANNOUNCEMENT= 'announcementdbs',
     THEME= 'themedbs',
     VENUE= 'venuedbs',
     CAKE= 'cakedbs',

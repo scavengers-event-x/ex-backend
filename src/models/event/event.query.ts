@@ -4,18 +4,6 @@ import { EventModel } from './eventModel'
 import { IEvent, IEventMain } from './event.types'
 import { COMMON_UN_PROJECTION } from '../../utils/constants'
 
-// const findOptions = {
-//   populate: [
-//     'theme',
-//     'venue',
-//     'userId',
-//     'assignedStaff',
-//     'drinks._id',
-//     'cakes',
-//     'decorations'
-//   ]
-// }
-
 const findOptions = {
   populate: [
     { path: 'theme', select: '-_id name' },

@@ -81,9 +81,9 @@ const userResponse = {
 }
 
 const mappedResponse = {
-  [CollectionNames.EVENT_TYPE]: {
-    TITLE: 'Event type',
-    LOWER: 'event Type'
+  [CollectionNames.ANNOUNCEMENT]: {
+    TITLE: 'Announcement',
+    LOWER: 'announcement'
   },
   [CollectionNames.VENUE]: {
     TITLE: 'Event type',
@@ -133,8 +133,6 @@ const getModelResponse = (model: CollectionNames) => {
   })
 }
 
-const eventTypeResponse = getModelResponse(CollectionNames.EVENT_TYPE)
-
 const themeResponse = getModelResponse(CollectionNames.THEME)
 
 const venueResponse = getModelResponse(CollectionNames.VENUE)
@@ -156,10 +154,22 @@ const eventResponse = {
   }
 }
 
+const announcementResponse = {
+  success: {
+    ...getModelResponse(CollectionNames.ANNOUNCEMENT).success,
+    READ: 'Announcement has been successfully marked as read.'
+  },
+  error: {
+    ...getModelResponse(CollectionNames.ANNOUNCEMENT).error,
+    READ: 'Failed to mark the announcement as read.',
+    ALREADY_PUBLISHED: 'The announcement has already been published.'
+  }
+}
+
 const fileResponse = {
   error: {
     UPLOAD: 'Error uploading file to cloud.'
   }
 }
 
-export { commonResponse, responseCode, userResponse, eventTypeResponse, themeResponse, venueResponse, cakeResponse, decorationResponse, drinkResponse, eventResponse, fileResponse }
+export { commonResponse, responseCode, userResponse, announcementResponse, themeResponse, venueResponse, cakeResponse, decorationResponse, drinkResponse, eventResponse, fileResponse }

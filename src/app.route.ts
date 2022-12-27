@@ -2,13 +2,13 @@ import { Router } from 'express'
 
 import {
   userRouter,
-  eventTypeRouter,
   themeRouter,
   venueRouter,
   cakeRouter,
-  decorationRouter,
   drinkRouter,
-  eventRouter
+  eventRouter,
+  decorationRouter,
+  announcementRouter
 } from './models'
 import { authenticator } from './middleware'
 
@@ -24,7 +24,7 @@ router.use('/venue', venueRouter)
 router.use('/drink', drinkRouter)
 router.use('/event', eventRouter)
 router.use('/decoration', decorationRouter)
-router.use('/event-type', eventTypeRouter)
+router.use('/announcement', announcementRouter)
 
 // SECURE
 
