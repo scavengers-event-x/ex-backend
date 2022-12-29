@@ -25,11 +25,20 @@ enum UserOperations {
   REACTIVATION='REACTIVATION',
 }
 
+interface FieldTypeUserAddress {
+  province: string,
+  city: string,
+  ward: number,
+  tole: string,
+}
+
 interface FieldTypeUserProfile {
   fullName: string,
-  address: string,
+  address: FieldTypeUserAddress,
   phone: string,
-  gender: UserGender
+  gender: UserGender,
+  citizenship?: string,
+  pan?: number
 }
 
 interface FieldTypeUser {

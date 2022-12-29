@@ -45,7 +45,10 @@ const userSchema = new Schema<FieldTypeUserMain>({
   },
   profile: {
     address: {
-      type: String
+      province: { type: String },
+      city: { type: String },
+      ward: { type: Number },
+      tole: { type: String }
     },
     gender: {
       enum: [UserGender.MALE, UserGender.FEMALE, UserGender.OTHERS],
@@ -56,6 +59,12 @@ const userSchema = new Schema<FieldTypeUserMain>({
     },
     phone: {
       type: String
+    },
+    citizenship: {
+      type: String
+    },
+    pan: {
+      type: Number
     }
   }
 }, { strict: true, timestamps: { createdAt: true, updatedAt: 'modifiedAt' } })
