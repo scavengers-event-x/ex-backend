@@ -54,8 +54,8 @@ const conUpdateDrink = async (req, res, next) => {
 
   let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    if (req.file.path) {
-      fileDetail = await uploadImage(req.file.path, ECloudFolderName.DRINK)
+    if (req.file?.path) {
+      fileDetail = await uploadImage(req.file?.path, ECloudFolderName.DRINK)
       if (!fileDetail) {
         return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
       }
@@ -81,8 +81,8 @@ const conInsertNewDrink = async (req, res, next) => {
   }
   let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    if (req.file.path) {
-      fileDetail = await uploadImage(req.file.path, ECloudFolderName.DRINK)
+    if (req.file?.path) {
+      fileDetail = await uploadImage(req.file?.path, ECloudFolderName.DRINK)
       if (!fileDetail) {
         return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
       }
@@ -95,6 +95,7 @@ const conInsertNewDrink = async (req, res, next) => {
         .send(makeSuccessObject<IDrink>(response[0], drinkResponse.success.INSERT))
     }
   } catch (_err) {
+    console.log('err: ', _err)
     next({ message: drinkResponse.error.INSERT, status: responseCode.BAD_REQUEST })
   }
 }

@@ -5,7 +5,7 @@ import { FunctionWithParamAndReturn, GenericObject } from '../../utils'
 import { FieldTypeUserRegister, FieldTypeUserValidStatus, UserAccountStatus, UserCategory } from './user.types'
 
 const userProjection = {
-  accountStatus: 1, category: 1, email: 1, image: 1, isVerified: 1, profile: 1
+  accountStatus: 1, category: 1, email: 1, image: 1, isVerified: 1, profile: 1, createdAt: 1, modifiedAt: 1, access: 1
 }
 
 const fetchAllUsers = () => {

@@ -53,8 +53,8 @@ const conUpdateDecoration = async (req, res, next) => {
   }
   let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    if (req.file.path) {
-      fileDetail = await uploadImage(req.file.path, ECloudFolderName.DECORATION)
+    if (req.file?.path) {
+      fileDetail = await uploadImage(req.file?.path, ECloudFolderName.DECORATION)
       if (!fileDetail) {
         return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
       }
@@ -80,8 +80,8 @@ const conInsertNewDecoration = async (req, res, next) => {
   }
   let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    if (req.file.path) {
-      fileDetail = await uploadImage(req.file.path, ECloudFolderName.DECORATION)
+    if (req.file?.path) {
+      fileDetail = await uploadImage(req.file?.path, ECloudFolderName.DECORATION)
       if (!fileDetail) {
         return next({ message: fileResponse.error.UPLOAD, status: responseCode.BAD_REQUEST })
       }

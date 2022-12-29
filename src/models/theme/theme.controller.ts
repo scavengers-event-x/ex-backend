@@ -43,8 +43,8 @@ const conUpdateTheme = async (req, res, next) => {
 
   let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    if (req.file.path) {
-      fileDetail = await uploadImage(req.file.path, ECloudFolderName.THEME)
+    if (req.file?.path) {
+      fileDetail = await uploadImage(req.file?.path, ECloudFolderName.THEME)
       if (!fileDetail) {
         return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
       }
@@ -70,8 +70,8 @@ const conInsertNewTheme = async (req, res, next) => {
   }
   let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    if (req.file.path) {
-      fileDetail = await uploadImage(req.file.path, ECloudFolderName.THEME)
+    if (req.file?.path) {
+      fileDetail = await uploadImage(req.file?.path, ECloudFolderName.THEME)
       if (!fileDetail) {
         return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
       }

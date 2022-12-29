@@ -43,8 +43,8 @@ const conUpdateVenue = async (req, res, next) => {
 
   let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    if (req.file.path) {
-      fileDetail = await uploadImage(req.file.path, ECloudFolderName.VENUE)
+    if (req.file?.path) {
+      fileDetail = await uploadImage(req.file?.path, ECloudFolderName.VENUE)
       if (!fileDetail) {
         return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
       }
@@ -70,8 +70,8 @@ const conInsertNewVenue = async (req, res, next) => {
   }
   let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    if (req.file.path) {
-      fileDetail = await uploadImage(req.file.path, ECloudFolderName.VENUE)
+    if (req.file?.path) {
+      fileDetail = await uploadImage(req.file?.path, ECloudFolderName.VENUE)
       if (!fileDetail) {
         return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
       }
