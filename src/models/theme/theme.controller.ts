@@ -53,7 +53,7 @@ const conUpdateTheme = async (req, res, next) => {
     if (!themeInSystem.length) {
       return next({ message: themeResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
-    if (themeInSystem[0].image.public_id) { await destroyImage(themeInSystem[0].image.public_id) }
+    if (themeInSystem[0].image.public_id && fileDetail) { await destroyImage(themeInSystem[0].image.public_id) }
     const updatedTheme = await themeQuery.updateTheme(themeId, getBodyWithFileUrl(mappedTheme, fileDetail))
     if (updatedTheme) {
       res.status(responseCode.ACCEPTED).send(makeSuccessObject<ITheme>(updatedTheme, themeResponse.success.UPDATE))

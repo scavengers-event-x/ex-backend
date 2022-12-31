@@ -53,7 +53,7 @@ const conUpdateVenue = async (req, res, next) => {
     if (!venueInSystem.length) {
       return next({ message: venueResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
-    if (venueInSystem[0].image.public_id) { await destroyImage(venueInSystem[0].image.public_id) }
+    if (venueInSystem[0].image.public_id && fileDetail) { await destroyImage(venueInSystem[0].image.public_id) }
     const updatedVenue = await venueQuery.updateVenue(venueId, getBodyWithFileUrl(mappedVenue, fileDetail))
     if (updatedVenue) {
       res.status(responseCode.ACCEPTED).send(makeSuccessObject<IVenue>(updatedVenue, venueResponse.success.UPDATE))

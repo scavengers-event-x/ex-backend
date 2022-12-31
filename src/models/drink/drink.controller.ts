@@ -64,7 +64,7 @@ const conUpdateDrink = async (req, res, next) => {
     if (!drinkInSystem.length) {
       return next({ message: drinkResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
-    if (drinkInSystem[0].image.public_id) { await destroyImage(drinkInSystem[0].image.public_id) }
+    if (drinkInSystem[0].image.public_id && fileDetail) { await destroyImage(drinkInSystem[0].image.public_id) }
     const updatedDrink = await drinkQuery.updateDrink(drinkId, getBodyWithFileUrl(mappedDrink, fileDetail))
     if (updatedDrink) {
       res.status(responseCode.ACCEPTED).send(makeSuccessObject<IDrink>(updatedDrink, drinkResponse.success.UPDATE))

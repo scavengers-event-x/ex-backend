@@ -8,5 +8,6 @@ export enum ECloudFolderName {
     DECORATION = 'decoration',
     DRINK = 'drink',
     THEME = 'theme',
-    VENUE = 'venue'
+    VENUE = 'venue',
+    EVENT = 'event'
 }

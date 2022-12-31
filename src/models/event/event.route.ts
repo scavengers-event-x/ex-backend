@@ -8,13 +8,13 @@ const router = Router()
 
 router.route('/')
   .get(eventController.conFetchAllEvents)
-  .post(multerSingleImage(), eventController.conInsertNewEvent)
+  .post(multerSingleImage('customCakeImage'), eventController.conInsertNewEvent)
 
 router.get('/mine', eventController.conFetchAllEventsOfLoggedInUser)
 
 router.route('/:id')
   .get(eventController.conFetchEventById)
-  .put(multerSingleImage(), eventController.conUpdateEvent)
+  .put(multerSingleImage('customCakeImage'), eventController.conUpdateEvent)
   .delete(eventController.conDeleteEvent)
 
 router.put('/:id/assign', conAssignStaffToEvent)

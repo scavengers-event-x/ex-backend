@@ -21,6 +21,13 @@ const eventSchema = new Schema<IEventMain>({
     _id: { type: Schema.Types.ObjectId, ref: CollectionNames.CAKE },
     pound: Number
   }],
+  customCake: {
+    image: {
+      url: String,
+      public_id: String
+    },
+    pound: { type: Number }
+  },
   decorations: [{ type: Schema.Types.ObjectId, ref: CollectionNames.DECORATION }],
   payment: {
     token: { type: String },

@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongoose'
+import { IImageBody } from '../../utils'
 
 interface IEventDrink {
   _id: ObjectId,
@@ -7,6 +8,11 @@ interface IEventDrink {
 
 interface IEventCake {
   _id: ObjectId,
+  pound: number
+}
+
+interface ICustomCake {
+  image: IImageBody,
   pound: number
 }
 
@@ -22,7 +28,8 @@ interface IEvent {
   payment?: {
     token: string,
     idx: string
-  }
+  },
+  customCake?: ICustomCake
 }
 
 interface IEventMain extends IEvent{
