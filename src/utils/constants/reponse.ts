@@ -56,7 +56,9 @@ const userResponse = {
     ADD_STAFF: 'Adding new staff has been failed.',
     OTP_EXPIRED: 'The provided OTP code has been expired. Please try sending new OTP.',
     OTP_INVALID: 'Please enter valid OTP code.',
-    OTP_SENT: (email) => `We were unable to send OTP code to ${generateDisplayEmail(email)}`
+    OTP_SENT: (email) => `We were unable to send OTP code to ${generateDisplayEmail(email)}`,
+    RESET_REQUEST: 'Failed to mark reset password request.',
+    PASSWORD_DEFAULT: 'Failed to set default password.'
   },
   success: {
     ACTIVATION: 'User has been activated successfully.',
@@ -70,13 +72,15 @@ const userResponse = {
     INVITE_USER: 'You have successfully invited a new user.',
     USER_PROFILE: 'User profile has been fetched successfully.',
     USER_UPDATED: 'User has been updated successfully.',
+    RESET_REQUEST: 'Your reset password request has been marked.',
     LOGIN: 'You have been successfully logged in to the system',
     ADD_STAFF: 'New staff has been added successfully.',
     OTP_SENT: (email) => `An OTP code has been sent to ${generateDisplayEmail(email)}`,
     OTP_VERIFIED: 'The OTP code has been verified successfully.',
     REGISTER: 'You have been registered successfully.',
     RESET_PASSWORD: 'You have successfully set new password',
-    USER_CREDENTIALS: 'User credentials has been fetched successfully.'
+    USER_CREDENTIALS: 'User credentials has been fetched successfully.',
+    PASSWORD_DEFAULT: "User's password has been set to default"
   }
 }
 

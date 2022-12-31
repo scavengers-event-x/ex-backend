@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongoose'
+import {Nullable} from "../../utils";
 
 enum UserCategory {
   MANAGER='MANAGER',
@@ -57,6 +58,7 @@ interface FieldTypeUserMain extends FieldTypeUser {
   createdAt: Date,
   modifiedAt: Date,
   operation: UserOperations,
+  passwordResetRequestDate: Nullable<Date>,
   otpCode: string,
   otpExpiry: Date,
 }
@@ -81,14 +83,6 @@ interface FieldTypeUserRegister extends FieldTypeUserLogin{
   operation: UserOperations.REGISTER
 }
 
-interface FieldTypeUserCredential {
-  _id: ObjectId,
-  accountStatus: UserAccountStatus,
-  category: UserCategory
-  email: string,
-  profile: FieldTypeUserProfile
-}
-
 interface FieldTypeUserValidStatus {
   isActive: boolean,
   isInSystem: boolean
@@ -106,7 +100,6 @@ export {
   FieldTypeUserJWT,
   FieldTypeUserRegister,
   FieldTypeUserLogin,
-  FieldTypeUserCredential,
   FieldTypeUserValidStatus,
   FieldTypeOTP,
   UserCategory,

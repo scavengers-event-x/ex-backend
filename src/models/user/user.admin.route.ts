@@ -5,10 +5,10 @@ import {
   conChangePassword,
   conFetchLoggedInUser,
   conFetchUserByCategory,
-  conLoginUser, conToggleUserAccess,
+  conLoginUser, conRequestResetPassword, conToggleUserAccess,
   conUpdateUser
 } from './user.controller'
-import { authenticator, authorizerManager } from '../../middleware'
+import { authenticator, authorizerManager, authorizerStaff } from '../../middleware'
 import { UserCategory } from './user.types'
 
 const router = Router()
@@ -25,9 +25,13 @@ router.put('/change-password', conChangePassword)
 
 router.put('/update', conUpdateUser)
 
+router.put('/request-reset-password', authorizerStaff, conRequestResetPassword)
+
 router.use(authorizerManager)
 
 router.put('/access/:id', conToggleUserAccess)
+
+router.put('/set-default-password/:id', conToggleUserAccess)
 
 router.get('/staff-list', conFetchUserByCategory(UserCategory.STAFF))
 

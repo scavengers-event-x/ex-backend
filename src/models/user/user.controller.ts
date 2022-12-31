@@ -172,15 +172,37 @@ const conToggleUserAccess = (req, res, next) => {
       return next({ message: userResponse.error.USER_NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
     updateUser(userId, { access: !user.access })
+      .then((user2) => {
+        res.status(responseCode.ACCEPTED).send(makeSuccessObject<FieldTypeUser>(user2, !user2.access ? userResponse.success.ACCESS_REVOKED : userResponse.success.ACCESS_GRANTED))
+      })
+      .catch(() => {
+        next({ message: user.access ? userResponse.error.ACCESS_REVOKE : userResponse.error.ACCESS_GRANT, status: responseCode.BAD_REQUEST })
+      })
+  })
+    .catch(() => {
+      next({ message: userResponse.error.DEACTIVATION, status: responseCode.BAD_REQUEST })
+    })
+}
+
+const conSetDefaultPassword = (req, res, next) => {
+  const userId = req.params.id
+
+  fetchUserById(userId).then(async (user) => {
+    if (!user) {
+      return next({ message: userResponse.error.USER_NOT_FOUND, status: responseCode.BAD_REQUEST })
+    }
+    const cryptPassword = await bcrypt.hash(user.email.split('@')[0].concat('@ex22'), BCRYPT_SALT_ROUNDS)
+
+    updateUser(userId, { password: cryptPassword })
       .then((user) => {
-        res.status(responseCode.ACCEPTED).send(makeSuccessObject<FieldTypeUser>(user, !user.access ? userResponse.success.ACCESS_REVOKED : userResponse.success.ACCESS_GRANTED))
+        res.status(responseCode.ACCEPTED).send(makeSuccessObject<FieldTypeUser>(user, userResponse.success.PASSWORD_DEFAULT))
       })
       .catch(() => {
         next({ message: !user.access ? userResponse.error.ACCESS_REVOKE : userResponse.error.ACCESS_GRANT, status: responseCode.BAD_REQUEST })
       })
   })
     .catch(() => {
-      next({ message: userResponse.error.DEACTIVATION, status: responseCode.BAD_REQUEST })
+      next({ message: userResponse.error.PASSWORD_DEFAULT, status: responseCode.BAD_REQUEST })
     })
 }
 
@@ -330,6 +352,30 @@ const conChangePassword = (req, res, next) => {
     })
 }
 
+const conRequestResetPassword = (req, res, next) => {
+  const { email } = req.body
+  if (!email) {
+    return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.BAD_REQUEST })
+  }
+
+  fetchUserByKeyValue({ email })
+    .then((user) => {
+      if (!user) {
+        return next({ message: userResponse.error.USER_NOT_FOUND, status: responseCode.NOT_FOUND })
+      }
+      updateUser(user._id, { passwordResetRequestDate: new Date() })
+        .then((user) => {
+          res.status(responseCode.ACCEPTED).send(makeSuccessObject<null>(null, userResponse.success.RESET_REQUEST))
+        })
+        .catch(() => {
+          next({ message: userResponse.error.RESET_REQUEST, status: responseCode.BAD_REQUEST })
+        })
+    })
+    .catch(() => {
+      next()
+    })
+}
+
 export {
   conToggleUserAccess,
   conFetchAllUsers,
@@ -344,5 +390,6 @@ export {
   conResetPassword,
   conFetchUserById,
   conChangePassword,
-  conAddStaff
+  conAddStaff,
+  conRequestResetPassword
 }

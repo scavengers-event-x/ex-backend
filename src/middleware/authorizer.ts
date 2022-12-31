@@ -20,4 +20,22 @@ const authorizerManager = (req, res, next) => {
     })
 }
 
-export { authorizerManager }
+const authorizerStaff = (req, res, next) => {
+  const { userId } = req.loggedInUser as FieldTypeUserJWT
+
+  UserModel.findById(userId)
+    .then((user) => {
+      if (!user) {
+        next({ message: userResponse.error.USER_NOT_FOUND, status: responseCode.NOT_FOUND })
+      } else if (user.category !== UserCategory.STAFF) {
+        next({ message: commonResponse.error.UNAUTHORIZED_ACCESS, status: responseCode.FORBIDDEN })
+      } else {
+        next()
+      }
+    })
+    .catch(() => {
+      next({})
+    })
+}
+
+export { authorizerManager, authorizerStaff }
