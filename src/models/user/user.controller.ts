@@ -137,7 +137,6 @@ const conLoginUser = (apiUserCat: UserCategory[]) => (req, res, next) => {
 
 const conUpdateUser = (req, res, next) => {
   const { userId } = req.loggedInUser as FieldTypeUserJWT
-
   const mappedUser = userProfileMapping(req.body)
   if (!mappedUser?.profile) {
     return next({ message: commonResponse.error.NO_DATA_TO_UPDATE('user'), status: responseCode.BAD_REQUEST })
