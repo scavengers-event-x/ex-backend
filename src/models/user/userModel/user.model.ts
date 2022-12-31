@@ -47,6 +47,10 @@ const userSchema = new Schema<FieldTypeUserMain>({
     type: Date,
     default: null
   },
+  lastPasswordDefaultResetDate: {
+    type: Number,
+    default: null
+  },
   profile: {
     address: {
       province: { type: String },

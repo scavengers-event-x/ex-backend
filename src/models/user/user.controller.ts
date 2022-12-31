@@ -196,7 +196,7 @@ const conSetDefaultPassword = (req, res, next) => {
     }
     const cryptPassword = await bcrypt.hash(user.email.split('@')[0].concat('@ex22'), BCRYPT_SALT_ROUNDS)
 
-    updateUser(userId, { password: cryptPassword, passwordResetRequestDate: null })
+    updateUser(userId, { password: cryptPassword, passwordResetRequestDate: null, lastPasswordDefaultResetDate: Date.now() })
       .then((user2) => {
         res.status(responseCode.ACCEPTED).send(makeSuccessObject<FieldTypeUser>(user2, userResponse.success.PASSWORD_DEFAULT))
       })
@@ -363,8 +363,17 @@ const conRequestResetPassword = (req, res, next) => {
 
   fetchUserByKeyValue({ email })
     .then((user) => {
-      if (!user && user.category !== UserCategory.STAFF) {
+      if (!user) {
         return next({ message: userResponse.error.USER_NOT_FOUND, status: responseCode.NOT_FOUND })
+      }
+      if (user.category !== UserCategory.STAFF) {
+        return next({ message: userResponse.error.ONLY_STAFF_REQ, status: responseCode.BAD_REQUEST })
+      }
+      if ((user.lastPasswordDefaultResetDate + 86400000) > Date.now()) {
+        return next({ message: userResponse.error.RESET_REQUEST_TIME, status: responseCode.BAD_REQUEST })
+      }
+      if (user.passwordResetRequestDate) {
+        return next({ message: userResponse.error.ALREADY_RESET_REQUESTED, status: responseCode.BAD_REQUEST })
       }
       updateUser(user._id, { passwordResetRequestDate: new Date() })
         .then((user) => {

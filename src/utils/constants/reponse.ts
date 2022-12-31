@@ -58,7 +58,10 @@ const userResponse = {
     OTP_INVALID: 'Please enter valid OTP code.',
     OTP_SENT: (email) => `We were unable to send OTP code to ${generateDisplayEmail(email)}`,
     RESET_REQUEST: 'Failed to mark reset password request.',
-    PASSWORD_DEFAULT: 'Failed to set default password.'
+    PASSWORD_DEFAULT: 'Failed to set default password.',
+    ONLY_STAFF_REQ: 'This request can only be made by staff',
+    RESET_REQUEST_TIME: 'You can only request to reset the password after 24 hrs of last request.',
+    ALREADY_RESET_REQUESTED: 'A similar request is already present and is in pending.'
   },
   success: {
     ACTIVATION: 'User has been activated successfully.',

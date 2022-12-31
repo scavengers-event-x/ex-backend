@@ -59,6 +59,7 @@ interface FieldTypeUserMain extends FieldTypeUser {
   modifiedAt: Date,
   operation: UserOperations,
   passwordResetRequestDate: Nullable<Date>,
+  lastPasswordDefaultResetDate: Nullable<number>,
   otpCode: string,
   otpExpiry: Date,
 }
