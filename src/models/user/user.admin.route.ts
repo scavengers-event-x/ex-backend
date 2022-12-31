@@ -5,7 +5,7 @@ import {
   conChangePassword,
   conFetchLoggedInUser,
   conFetchUserByCategory,
-  conLoginUser, conRequestResetPassword, conToggleUserAccess,
+  conLoginUser, conRequestResetPassword, conSetDefaultPassword, conToggleUserAccess,
   conUpdateUser
 } from './user.controller'
 import { authenticator, authorizerManager } from '../../middleware'
@@ -31,7 +31,7 @@ router.use(authorizerManager)
 
 router.put('/access/:id', conToggleUserAccess)
 
-router.put('/set-default-password/:id', conToggleUserAccess)
+router.put('/set-default-password/:id', conSetDefaultPassword)
 
 router.get('/staff-list', conFetchUserByCategory(UserCategory.STAFF))
 

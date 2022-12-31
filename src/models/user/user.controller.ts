@@ -191,14 +191,17 @@ const conSetDefaultPassword = (req, res, next) => {
     if (!user) {
       return next({ message: userResponse.error.USER_NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
+    if (!user.passwordResetRequestDate) {
+      return next({ message: userResponse.error.PASSWORD_DEFAULT, status: responseCode.BAD_REQUEST })
+    }
     const cryptPassword = await bcrypt.hash(user.email.split('@')[0].concat('@ex22'), BCRYPT_SALT_ROUNDS)
 
-    updateUser(userId, { password: cryptPassword })
-      .then((user) => {
-        res.status(responseCode.ACCEPTED).send(makeSuccessObject<FieldTypeUser>(user, userResponse.success.PASSWORD_DEFAULT))
+    updateUser(userId, { password: cryptPassword, passwordResetRequestDate: null })
+      .then((user2) => {
+        res.status(responseCode.ACCEPTED).send(makeSuccessObject<FieldTypeUser>(user2, userResponse.success.PASSWORD_DEFAULT))
       })
       .catch(() => {
-        next({ message: !user.access ? userResponse.error.ACCESS_REVOKE : userResponse.error.ACCESS_GRANT, status: responseCode.BAD_REQUEST })
+        next({ message: userResponse.error.PASSWORD_DEFAULT, status: responseCode.BAD_REQUEST })
       })
   })
     .catch(() => {
@@ -391,5 +394,6 @@ export {
   conFetchUserById,
   conChangePassword,
   conAddStaff,
+  conSetDefaultPassword,
   conRequestResetPassword
 }
