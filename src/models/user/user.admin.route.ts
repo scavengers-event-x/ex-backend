@@ -15,6 +15,8 @@ const router = Router()
 
 router.post('/login', conLoginUser([UserCategory.STAFF, UserCategory.MANAGER]))
 
+router.put('/request-reset-password', conRequestResetPassword)
+
 router.use(authenticator)
 
 router.get('/customer-list', conFetchUserByCategory(UserCategory.CUSTOMER))
@@ -24,8 +26,6 @@ router.get('/profile', conFetchLoggedInUser)
 router.put('/change-password', conChangePassword)
 
 router.put('/update', conUpdateUser)
-
-router.put('/request-reset-password', conRequestResetPassword)
 
 router.use(authorizerManager)
 
