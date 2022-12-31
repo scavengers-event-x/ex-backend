@@ -47,8 +47,6 @@ const conFetchDrinkById = async (req, res, next) => {
 const conUpdateDrink = async (req, res, next) => {
   const drinkId = req.params.id
 
-  console.log('req: ', req.body)
-
   const mappedDrink = drinkMapping(req.body)
   if (!mappedDrink) {
     return next({ message: drinkResponse.error.UPDATE, status: responseCode.BAD_REQUEST })
@@ -97,7 +95,6 @@ const conInsertNewDrink = async (req, res, next) => {
         .send(makeSuccessObject<IDrink>(response[0], drinkResponse.success.INSERT))
     }
   } catch (_err) {
-    console.log('err: ', _err)
     next({ message: drinkResponse.error.INSERT, status: responseCode.BAD_REQUEST })
   }
 }

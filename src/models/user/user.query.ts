@@ -21,7 +21,7 @@ const fetchUserCredential = (id: ObjectId) => {
 }
 
 const fetchUserByKeyValue = (object: GenericObject<string>) => {
-  return UserModel.findOne(object, { ...userProjection, password: 1, access: 1 })
+  return UserModel.findOne(object)
 }
 
 const insertUser = (data: FieldTypeUserRegister) => {

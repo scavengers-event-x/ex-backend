@@ -19,7 +19,7 @@ const conFetchAllPublishedAnnouncements = async (req, res, next) => {
   const { userId } = req.loggedInUser as FieldTypeUserJWT
   try {
     const announcements = await announcementQuery.fetchAllPublishedAnnouncements()
-    const visAnnouncements = announcements.map<FieldTypeAnnouncementVis>((ann) => ({ message: ann.message, title: ann.title, read: ann.readUserList.includes(userId) }))
+    const visAnnouncements = announcements.map<FieldTypeAnnouncementVis>((ann) => ({ _id: ann._id, message: ann.message, title: ann.title, read: ann.readUserList.includes(userId) }))
     res.status(responseCode.OK)
       .send(makeSuccessObject<FieldTypeAnnouncementVis[]>(visAnnouncements, announcementResponse.success.FETCH_ALL))
   } catch (_err) {

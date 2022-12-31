@@ -13,6 +13,7 @@ interface FieldTypeAnnouncementMain extends FieldTypeAnnouncement{
 }
 
 interface FieldTypeAnnouncementVis {
+  _id: ObjectId,
   title: string,
   message: string,
   read: boolean

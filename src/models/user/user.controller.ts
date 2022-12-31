@@ -91,7 +91,6 @@ const conAddStaff = async (req, res, next) => {
   if (!req.body || !req.body.email || req.body.category !== UserCategory.STAFF || !req.body.profile) {
     return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.NOT_ACCEPTABLE })
   }
-  console.log('Password: ', req.body.email.split('@')[0].concat('ex22'))
   const cryptPassword = await bcrypt.hash(req.body.email.split('@')[0].concat('@ex22'), BCRYPT_SALT_ROUNDS)
 
   insertUser({ ...req.body, password: cryptPassword })
@@ -244,7 +243,7 @@ const conSendOTP = async (req, res, next) => {
           .then(() => {
             updateUser(user._id, { operation, otpCode: cryptOtp, otpExpiry })
               .then(() => {
-                res.status(responseCode.OK).send(makeSuccessObject<FieldTypeUser>(user, userResponse.success.OTP_SENT(user.email)))
+                res.status(responseCode.OK).send(makeSuccessObject<null>(null, userResponse.success.OTP_SENT(user.email)))
               })
               .catch(() => {
                 next({ message: userResponse.error.OTP_SENT(email), status: responseCode.BAD_REQUEST })
