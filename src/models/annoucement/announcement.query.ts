@@ -5,7 +5,7 @@ import { COMMON_UN_PROJECTION } from '../../utils/constants'
 import { FieldTypeAnnouncement, FieldTypeAnnouncementMain } from './announcement.types'
 
 const fetchAllAnnouncements = () => {
-  return AnnouncementModel.find({ deleted: false }, { ...COMMON_UN_PROJECTION })
+  return AnnouncementModel.find({ deleted: false }, { ...COMMON_UN_PROJECTION }, { sort: { published: 1 } })
 }
 
 const fetchAllPublishedAnnouncements = () => {
