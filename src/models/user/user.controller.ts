@@ -360,7 +360,7 @@ const conRequestResetPassword = (req, res, next) => {
 
   fetchUserByKeyValue({ email })
     .then((user) => {
-      if (!user) {
+      if (!user && user.category !== UserCategory.STAFF) {
         return next({ message: userResponse.error.USER_NOT_FOUND, status: responseCode.NOT_FOUND })
       }
       updateUser(user._id, { passwordResetRequestDate: new Date() })
