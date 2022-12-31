@@ -11,7 +11,7 @@ import {
   conToggleUserAccess,
   conUpdateUser
 } from './user.controller'
-import { authenticator, authorizerCategory } from '../../middleware'
+import {authenticator, authorizerCategory, multerSingleImage} from '../../middleware'
 import { UserCategory } from './user.types'
 
 const router = Router()
@@ -28,7 +28,7 @@ router.get('/profile', conFetchLoggedInUser)
 
 router.put('/change-password', conChangePassword)
 
-router.put('/update', conUpdateUser)
+router.put('/update', multerSingleImage(), conUpdateUser)
 
 router.use(authorizerCategory(UserCategory.MANAGER))
 

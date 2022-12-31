@@ -167,6 +167,8 @@ const conUpdateUser = async (req, res, next) => {
       if (userInSystem.image.public_id) { await destroyImage(userInSystem.image.public_id) }
     }
 
+    console.log('req: ', req.body)
+
     const mappedUser = userProfileMapping(req.body)
     const hasProfileData = Object.keys(mappedUser?.profile).length > 0
     if (!hasProfileData && !fileDetail) {
