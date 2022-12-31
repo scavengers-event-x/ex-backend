@@ -1,9 +1,11 @@
 import { Router } from 'express'
 
+import { UserCategory } from '../user'
 import * as cakeController from './cake.controller'
-import { authorizerManager, multerSingleImage } from '../../middleware'
+import { authorizerCategory, multerSingleImage } from '../../middleware'
 
 const router = Router()
+const authorizerManager = authorizerCategory(UserCategory.MANAGER)
 
 router.route('/')
   .get(cakeController.conFetchAllCakes)

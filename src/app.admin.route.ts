@@ -8,9 +8,11 @@ import {
   drinkAdminRouter,
   eventRouter,
   userAdminRouter,
-  announcementAdminRouter
+  announcementAdminRouter, UserCategory
 } from './models'
-import { authenticator, authorizerManager } from './middleware'
+import { authenticator, authorizerCategory } from './middleware'
+
+const authorizerManager = authorizerCategory(UserCategory.MANAGER)
 
 const router = Router()
 

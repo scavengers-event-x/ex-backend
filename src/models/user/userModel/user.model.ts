@@ -19,7 +19,8 @@ const userSchema = new Schema<FieldTypeUserMain>({
     unique: true
   },
   image: {
-    type: String
+    url: String,
+    public_id: String
   },
   isVerified: {
     default: false,

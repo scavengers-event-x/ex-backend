@@ -2,7 +2,14 @@ import * as bcrypt from 'bcrypt'
 
 import { userProfileMapping } from './userModel'
 import { BCRYPT_SALT_ROUNDS, mailer, prepareOtpMail } from '../../config'
-import { generateJWT, generateOTPCode, makeSuccessObject } from '../../utils'
+import {
+  ECloudFolderName,
+  generateJWT,
+  generateOTPCode,
+  getBodyWithFileUrl,
+  makeSuccessObject,
+  Nullable
+} from '../../utils'
 import {
   fetchAllUsers,
   fetchUserById,
@@ -20,7 +27,15 @@ import {
   UserCategory,
   UserOperations
 } from './user.types'
-import { commonResponse, OTP_EXPIRY_RESET_PASSWORD, responseCode, userResponse } from '../../utils/constants'
+import {
+  commonResponse, decorationResponse,
+  fileResponse,
+  OTP_EXPIRY_RESET_PASSWORD,
+  responseCode,
+  userResponse
+} from '../../utils/constants'
+import { UploadApiResponse } from 'cloudinary'
+import { destroyImage, uploadImage } from '../../middleware'
 
 const conFetchAllUsers = async (req, res, next) => {
   try {
@@ -135,20 +150,39 @@ const conLoginUser = (apiUserCat: UserCategory[]) => (req, res, next) => {
     })
 }
 
-const conUpdateUser = (req, res, next) => {
+const conUpdateUser = async (req, res, next) => {
   const { userId } = req.loggedInUser as FieldTypeUserJWT
-  const mappedUser = userProfileMapping(req.body)
-  if (!mappedUser?.profile) {
-    return next({ message: commonResponse.error.NO_DATA_TO_UPDATE('user'), status: responseCode.BAD_REQUEST })
-  }
 
-  updateUser(userId, mappedUser)
-    .then((user) => {
-      res.status(responseCode.ACCEPTED).send(makeSuccessObject<FieldTypeUser>(user, userResponse.success.USER_UPDATED))
-    })
-    .catch(() => {
-      next({ message: userResponse.error.USER_UPDATE, status: responseCode.BAD_REQUEST })
-    })
+  let fileDetail:Nullable<UploadApiResponse> = null
+  try {
+    const userInSystem = await fetchUserById(userId)
+    if (!userInSystem) {
+      return next({ message: userResponse.error.USER_NOT_FOUND, status: responseCode.BAD_REQUEST })
+    }
+    if (req.file?.path) {
+      fileDetail = await uploadImage(req.file?.path, ECloudFolderName.USER)
+      if (!fileDetail) {
+        return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
+      }
+      if (userInSystem.image.public_id) { await destroyImage(userInSystem.image.public_id) }
+    }
+
+    const mappedUser = userProfileMapping(req.body)
+    const hasProfileData = Object.keys(mappedUser?.profile).length > 0
+    if (!hasProfileData && !fileDetail) {
+      return next({ message: commonResponse.error.NO_DATA_TO_UPDATE('user'), status: responseCode.BAD_REQUEST })
+    }
+
+    updateUser(userId, { ...getBodyWithFileUrl(hasProfileData ? mappedUser : {}, fileDetail) })
+      .then((user) => {
+        res.status(responseCode.ACCEPTED).send(makeSuccessObject<FieldTypeUser>(user, userResponse.success.USER_UPDATED))
+      })
+      .catch(() => {
+        next({ message: userResponse.error.USER_UPDATE, status: responseCode.BAD_REQUEST })
+      })
+  } catch (_err) {
+    next({ message: userResponse.error.USER_UPDATE, status: responseCode.BAD_REQUEST })
+  }
 }
 
 const conDeactivateUser = (req, res, next) => {

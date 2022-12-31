@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongoose'
-import {Nullable} from "../../utils";
+import { IImageBody, Nullable } from '../../utils'
 
 enum UserCategory {
   MANAGER='MANAGER',
@@ -50,7 +50,7 @@ interface FieldTypeUser {
   profile: FieldTypeUserProfile,
   isVerified: boolean
   access: boolean
-  image?: string,
+  image?: IImageBody,
 }
 
 interface FieldTypeUserMain extends FieldTypeUser {

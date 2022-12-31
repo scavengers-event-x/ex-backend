@@ -4,7 +4,6 @@ import {
   conChangePassword,
   conDeactivateUser,
   conFetchLoggedInUser,
-  conFetchUserByCategory,
   conFetchUserById,
   conLoginUser,
   conRegisterNewUser,
@@ -13,8 +12,8 @@ import {
   conUpdateUser,
   conVerifyOTP
 } from './user.controller'
-import { authenticator } from '../../middleware'
 import { UserCategory, UserOperations } from './user.types'
+import { authenticator, authorizerCategory, multerSingleImage } from '../../middleware'
 
 const router = Router()
 
@@ -35,14 +34,14 @@ router.post('/forgot-password', (req, res, next) => {
 router.post('/reset-password', conResetPassword)
 
 // SECURED
-router.use(authenticator)
+router.use(authenticator, authorizerCategory(UserCategory.CUSTOMER))
 
 // UNSECURE
 router.get('/profile', conFetchLoggedInUser)
 
 router.put('/change-password', conChangePassword)
 
-router.put('/update', conUpdateUser)
+router.put('/update', multerSingleImage(), conUpdateUser)
 
 router.get('/deactivate', conDeactivateUser)
 

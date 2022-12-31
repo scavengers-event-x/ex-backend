@@ -60,10 +60,10 @@ const conUpdateDecoration = async (req, res, next) => {
       }
     }
     const decorationInSystem = await decorationQuery.fetchDecorationById(decorationId)
-    if (decorationInSystem[0].image.public_id && fileDetail) { await destroyImage(decorationInSystem[0].image.public_id) }
     if (!decorationInSystem.length) {
       return next({ message: decorationResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
+    if (decorationInSystem[0].image.public_id && fileDetail) { await destroyImage(decorationInSystem[0].image.public_id) }
     const updatedDecoration = await decorationQuery.updateDecoration(decorationId, getBodyWithFileUrl(mappedDecoration, fileDetail))
     if (updatedDecoration) {
       res.status(responseCode.ACCEPTED).send(makeSuccessObject<IDecoration>(updatedDecoration, decorationResponse.success.UPDATE))
