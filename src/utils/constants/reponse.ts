@@ -115,6 +115,10 @@ const mappedResponse = {
   [CollectionNames.EVENT]: {
     TITLE: 'Event',
     LOWER: 'event'
+  },
+  [CollectionNames.CHAT]: {
+    TITLE: 'Chat',
+    LOWER: 'chat'
   }
 }
 
@@ -150,6 +154,8 @@ const decorationResponse = getModelResponse(CollectionNames.DECORATION)
 
 const drinkResponse = getModelResponse(CollectionNames.DRINK)
 
+const chatResponse = getModelResponse(CollectionNames.CHAT)
+
 const eventResponse = {
   success: {
     ...getModelResponse(CollectionNames.EVENT).success,
@@ -179,4 +185,4 @@ const fileResponse = {
   }
 }
 
-export { commonResponse, responseCode, userResponse, announcementResponse, themeResponse, venueResponse, cakeResponse, decorationResponse, drinkResponse, eventResponse, fileResponse }
+export { commonResponse, responseCode, userResponse, announcementResponse, themeResponse, venueResponse, cakeResponse, decorationResponse, drinkResponse, eventResponse, fileResponse, chatResponse }

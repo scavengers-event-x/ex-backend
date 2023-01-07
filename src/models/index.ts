@@ -1,4 +1,5 @@
 export * from './cake'
+export * from './chat'
 export * from './user'
 export * from './theme'
 export * from './event'

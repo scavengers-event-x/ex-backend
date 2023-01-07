@@ -8,7 +8,7 @@ import {
   drinkAdminRouter,
   eventRouter,
   userAdminRouter,
-  announcementAdminRouter, UserCategory
+  announcementAdminRouter, UserCategory, chatRouter
 } from './models'
 import { authenticator, authorizerCategory } from './middleware'
 
@@ -21,6 +21,7 @@ router.use('/user', userAdminRouter)
 
 router.use(authenticator)
 router.use('/event', eventRouter)
+router.use('/chat', chatRouter)
 
 router.use(authorizerManager)
 router.use('/cake', cakeAdminRouter)

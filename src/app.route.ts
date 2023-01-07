@@ -8,7 +8,7 @@ import {
   drinkRouter,
   eventRouter,
   decorationRouter,
-  announcementRouter
+  announcementRouter, chatRouter
 } from './models'
 import { authenticator } from './middleware'
 
@@ -19,6 +19,7 @@ router.use('/user', userRouter)
 
 router.use(authenticator)
 router.use('/cake', cakeRouter)
+router.use('/chat', chatRouter)
 router.use('/theme', themeRouter)
 router.use('/venue', venueRouter)
 router.use('/drink', drinkRouter)

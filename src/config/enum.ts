@@ -6,7 +6,8 @@ enum CollectionNames {
     CAKE= 'cakedbs',
     DECORATION= 'decorationdbs',
     DRINK= 'drinkdbs',
-    EVENT= 'eventdbs'
+    EVENT= 'eventdbs',
+    CHAT = 'chatdbs'
 }
 
 export { CollectionNames }
