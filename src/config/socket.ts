@@ -2,12 +2,7 @@ import socket from 'socket.io'
 
 import { app } from './server'
 
-const io = new socket.Server(app, {
-  cors: {
-    origin: 'http://localhost:3000',
-    credentials: true
-  }
-})
+const io = new socket.Server(app)
 
 global.onlineUsers = new Map()
 

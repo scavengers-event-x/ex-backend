@@ -93,8 +93,8 @@ const mappedResponse = {
     LOWER: 'announcement'
   },
   [CollectionNames.VENUE]: {
-    TITLE: 'Event type',
-    LOWER: 'event Type'
+    TITLE: 'Venue',
+    LOWER: 'venue'
   },
   [CollectionNames.THEME]: {
     TITLE: 'Theme',
