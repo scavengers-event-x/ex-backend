@@ -75,7 +75,11 @@ const userSchema = new Schema<FieldTypeUserMain>({
     pan: {
       type: Number
     }
-  }
+  },
+  chatUserList: [{
+    type: Schema.Types.ObjectId,
+    ref: CollectionNames.USER
+  }]
 }, { strict: true, timestamps: { createdAt: true, updatedAt: 'modifiedAt' } })
 
 const UserModel: Model<FieldTypeUserMain> = model(CollectionNames.USER, userSchema)

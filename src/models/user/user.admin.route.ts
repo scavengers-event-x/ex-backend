@@ -2,7 +2,7 @@ import { Router } from 'express'
 
 import {
   conAddStaff,
-  conChangePassword,
+  conChangePassword, conFetchChatContact,
   conFetchLoggedInUser,
   conFetchUserByCategory,
   conLoginUser,
@@ -11,7 +11,7 @@ import {
   conToggleUserAccess,
   conUpdateUser
 } from './user.controller'
-import {authenticator, authorizerCategory, multerSingleImage} from '../../middleware'
+import { authenticator, authorizerCategory, multerSingleImage } from '../../middleware'
 import { UserCategory } from './user.types'
 
 const router = Router()
@@ -29,6 +29,8 @@ router.get('/profile', conFetchLoggedInUser)
 router.put('/change-password', conChangePassword)
 
 router.put('/update', multerSingleImage(), conUpdateUser)
+
+router.get('/chat-contact', conFetchChatContact)
 
 router.use(authorizerCategory(UserCategory.MANAGER))
 

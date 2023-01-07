@@ -3,6 +3,7 @@ import * as chatQuery from './chat.query'
 import { FieldTypeChatInsert, FieldTypeChatGet } from './chat.types'
 import { commonResponse, chatResponse, responseCode } from '../../utils/constants'
 import { FieldTypeUserJWT } from '../user'
+import { insertChatUser } from '../user/user.query'
 
 const conFetchAllChats = async (req, res, next) => {
   const { userId } = req.loggedInUser as FieldTypeUserJWT
@@ -23,6 +24,7 @@ const conInsertNewChat = async (req, res, next) => {
     return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.BAD_REQUEST })
   }
   try {
+    await insertChatUser(userId, to)
     const insertRes = await chatQuery.insertChat({ message: { text: message }, users: [userId, to], sender: userId })
     if (insertRes) {
       res.status(responseCode.OK)

@@ -2,7 +2,7 @@ import { Router } from 'express'
 
 import {
   conChangePassword,
-  conDeactivateUser,
+  conDeactivateUser, conFetchChatContact,
   conFetchLoggedInUser,
   conFetchUserById,
   conLoginUser,
@@ -38,6 +38,8 @@ router.use(authenticator, authorizerCategory(UserCategory.CUSTOMER))
 
 // UNSECURE
 router.get('/profile', conFetchLoggedInUser)
+
+router.get('/chat-contact', conFetchChatContact)
 
 router.put('/change-password', conChangePassword)
 

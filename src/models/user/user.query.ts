@@ -48,6 +48,14 @@ const fetchUsersByCategory = (category: UserCategory) => {
   return UserModel.find({ category }, { _id: 1, email: 1, image: 1, profile: 1, access: 1, createdAt: 1, modifiedAt: 1, passwordResetRequestDate: 1 })
 }
 
+const insertChatUser = (userId, toId) => {
+  return UserModel.findByIdAndUpdate(userId, { $addToSet: { chatUserList: toId } })
+}
+
+const fetchChatContact = (userId) => {
+  return UserModel.findById(userId, { chatUserList: 1 }, { populate: [{ path: 'chatUserList', select: '_id, profile.fullName image' }] })
+}
+
 export {
   fetchAllUsers,
   fetchUserCredential,
@@ -56,5 +64,7 @@ export {
   insertUser,
   updateUser,
   getUserValidStatus,
-  fetchUsersByCategory
+  fetchUsersByCategory,
+  insertChatUser,
+  fetchChatContact
 }

@@ -11,7 +11,7 @@ import {
   Nullable
 } from '../../utils'
 import {
-  fetchAllUsers,
+  fetchChatContact,
   fetchUserById,
   fetchUserByKeyValue,
   fetchUserCredential,
@@ -28,7 +28,7 @@ import {
   UserOperations
 } from './user.types'
 import {
-  commonResponse, decorationResponse,
+  commonResponse,
   fileResponse,
   OTP_EXPIRY_RESET_PASSWORD,
   responseCode,
@@ -37,11 +37,12 @@ import {
 import { UploadApiResponse } from 'cloudinary'
 import { destroyImage, uploadImage } from '../../middleware'
 
-const conFetchAllUsers = async (req, res, next) => {
+const conFetchChatContact = async (req, res, next) => {
+  const { userId } = req.loggedInUser as FieldTypeUserJWT
   try {
-    const users = await fetchAllUsers()
-    res.status(users && users.length > 0 ? responseCode.OK : responseCode.OK)
-      .send(makeSuccessObject<FieldTypeUser[]>(users, userResponse.success.FETCH_ALL))
+    const user = await fetchChatContact(userId)
+    res.status(responseCode.OK)
+      .send(makeSuccessObject<FieldTypeUser>(user, userResponse.success.FETCH_ALL))
   } catch (_err) {
     next({ message: userResponse.error.FETCH_ALL, status: responseCode.BAD_REQUEST })
   }
@@ -425,7 +426,7 @@ const conRequestResetPassword = (req, res, next) => {
 
 export {
   conToggleUserAccess,
-  conFetchAllUsers,
+  conFetchChatContact,
   conFetchUserByCategory,
   conFetchLoggedInUser,
   conRegisterNewUser,

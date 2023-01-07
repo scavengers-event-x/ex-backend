@@ -58,6 +58,7 @@ interface FieldTypeUserMain extends FieldTypeUser {
   createdAt: Date,
   modifiedAt: Date,
   operation: UserOperations,
+  chatUserList?: ObjectId[],
   passwordResetRequestDate: Nullable<Date>,
   lastPasswordDefaultResetDate: Nullable<number>,
   otpCode: string,
