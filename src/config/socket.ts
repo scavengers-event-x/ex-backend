@@ -17,16 +17,19 @@ app.get('/socket', (req, res) => {
 global.onlineUsers = new Map()
 
 io.on('connection', (socket) => {
+  console.log('new user connected')
   global.chatSocket = socket
 
   socket.on('add-user', (userId) => {
+    console.log('add-user-called: ', userId)
     global.onlineUsers.set(userId, socket.id)
   })
 
   socket.on('send-msg', (data) => {
+    console.log('send-msg-called: ', data)
     const sendUserSocket = global.onlineUsers.get(data.to)
     if (sendUserSocket) {
-      socket.to(sendUserSocket).emit('msg-receive', { message: data.message, senderSelf: false, createdAt: new Date(Date.now()) })
+      socket.to(sendUserSocket).emit('msg-receive', { message: data.message, senderSelf: false, sender: data.from, createdAt: new Date(Date.now()) })
     }
   })
 

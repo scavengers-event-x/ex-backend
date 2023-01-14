@@ -18,7 +18,11 @@
 <body>
 <ul id="messages"></ul>
 <form id="form" action="">
-    <input id="input" autocomplete="off" /><button>Send</button>
+    <input id="input" autocomplete="off" />
+    <input placeholder="currentUser" id="userId" />
+    <button type="button" onclick="handleAddUser()">Add User</button>
+    <input placeholder="toUser" id="toUserId" />
+    <button>Send</button>
 </form>
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -26,15 +30,28 @@
     var socket = io(ENDPOINT);
 
     var form = document.getElementById('form');
+    var toUserId = document.getElementById('toUserId');
     var input = document.getElementById('input');
+    var userId = document.getElementById('userId');
+
+    function handleAddUser(){
+        socket.emit('add-user', userId.value)
+    }
+
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (input.value) {
-            socket.emit('chat message', input.value);
+            socket.emit('send-msg', {to: toUserId.value, message: input.value, from: userId.value});
             input.value = '';
         }
     });
+
+    socket.on('msg-receive', function(data){
+        console.log('msg-received', data);
+        const liChild = document.createTextNode(`FROM: ${data.from}, MESSAGE: ${data.message}\n`)
+        document.getElementById('messages').appendChild(liChild)
+    })
 </script>
 </body>
 </html>
