@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "start": "ts-node src/index.ts",
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon --delay 500ms src/index.ts",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
     "lint:fix": "npm run lint -- --fix"
   },

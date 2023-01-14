@@ -7,6 +7,9 @@ import './cloudinary'
 // Initiating configuration of database
 import './database'
 
+// Initiating configuration of socket
+import './socket'
+
 // Exporting environment variables and server
 export * from './enum'
 export * from './vars'

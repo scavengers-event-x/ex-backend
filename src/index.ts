@@ -1,6 +1,7 @@
+import path from 'path'
 import { app } from './config'
-import { makeErrorObject } from './utils'
 import { allRouter } from './app.route'
+import { makeErrorObject } from './utils'
 import { allAdminRouter } from './app.admin.route'
 import { commonResponse, responseCode } from './utils/constants'
 

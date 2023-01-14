@@ -11,6 +11,7 @@ import {
   announcementRouter, chatRouter
 } from './models'
 import { authenticator } from './middleware'
+import path from 'path'
 
 const router = Router()
 

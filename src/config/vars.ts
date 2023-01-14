@@ -14,6 +14,7 @@ export const envVars = {
   DB_USER: process.env.DB_USER,
   ENVIRONMENT: process.env.NODE_ENV,
   PORT: process.env.PORT,
+  SOCKET_PORT: process.env.SOCKET_PORT,
   MAILER_USER: process.env.MAILER_USER,
   MAILER_PASS: process.env.MAILER_PASS,
   MAILER_PORT: parseInt(process.env.MAILER_PORT),
