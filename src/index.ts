@@ -1,4 +1,3 @@
-import path from 'path'
 import { app } from './config'
 import { allRouter } from './app.route'
 import { makeErrorObject } from './utils'

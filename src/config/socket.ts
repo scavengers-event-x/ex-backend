@@ -14,13 +14,24 @@ app.get('/socket', (req, res) => {
   res.sendFile(path.join(__dirname, '/test.html'))
 })
 
+global.onlineUsers = new Map()
+
 io.on('connection', (socket) => {
-  console.log('a user connected')
+  global.chatSocket = socket
+
+  socket.on('add-user', (userId) => {
+    global.onlineUsers.set(userId, socket.id)
+  })
+
+  socket.on('send-msg', (data) => {
+    const sendUserSocket = global.onlineUsers.get(data.to)
+    if (sendUserSocket) {
+      socket.to(sendUserSocket).emit('msg-receive', { message: data.message, senderSelf: false, createdAt: new Date(Date.now()) })
+    }
+  })
+
   socket.on('disconnect', () => {
     console.log('user disconnected')
-  })
-  socket.on('chat message', (msg) => {
-    console.log('message: ' + msg)
   })
 })
 
