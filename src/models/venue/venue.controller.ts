@@ -85,15 +85,8 @@ const conInsertNewVenue = async (req, res, next) => {
   if (!name || !capacity) {
     return next({ message: commonResponse.error.INVALID_BODY, status: responseCode.BAD_REQUEST })
   }
-  let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    if (req.file?.path) {
-      fileDetail = await uploadImage(req.file?.path, ECloudFolderName.VENUE)
-      if (!fileDetail) {
-        return next({ message: fileResponse.error.UPLOAD, status: responseCode.INTERNAL_SERVER })
-      }
-    }
-    const insertRes = await venueQuery.insertVenue(getBodyWithFileUrl({ name, capacity, contact, location, ...remainingBody }, fileDetail))
+    const insertRes = await venueQuery.insertVenue({ name, capacity, contact, location, ...remainingBody })
     if (insertRes) {
       const response = await venueQuery.fetchVenueById(insertRes._id)
       res.status(response ? responseCode.OK : responseCode.INTERNAL_SERVER)
