@@ -8,7 +8,7 @@ import { envVars } from './vars'
 const app: Express = express()
 
 const server = createServer(app)
-const io = new Server(server)
+const io = new Server(server, { cors: { origin: '*' } })
 
 app.get('/socket', (req, res) => {
   res.sendFile(path.join(__dirname, '/test.html'))
@@ -17,16 +17,13 @@ app.get('/socket', (req, res) => {
 global.onlineUsers = new Map()
 
 io.on('connection', (socket) => {
-  console.log('new user connected')
   global.chatSocket = socket
 
   socket.on('add-user', (userId) => {
-    console.log('add-user-called: ', userId)
     global.onlineUsers.set(userId, socket.id)
   })
 
   socket.on('send-msg', (data) => {
-    console.log('send-msg-called: ', data)
     const sendUserSocket = global.onlineUsers.get(data.to)
     if (sendUserSocket) {
       socket.to(sendUserSocket).emit('msg-receive', { message: data.message, senderSelf: false, sender: data.from, createdAt: new Date(Date.now()) })
@@ -34,7 +31,13 @@ io.on('connection', (socket) => {
   })
 
   socket.on('disconnect', () => {
-    console.log('user disconnected')
+    global.onlineUsers.forEach((value, key) => {
+      if (value === socket.id) {
+        global.onlineUsers.delete(key)
+        console.log('user disconnected: ', key)
+        return null
+      }
+    })
   })
 })
 

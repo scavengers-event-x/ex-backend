@@ -3,7 +3,7 @@ import { eventMapping } from './eventModel'
 import { ECloudFolderName, makeSuccessObject, Nullable } from '../../utils'
 import { IEvent, IEventMain } from './event.types'
 import { commonResponse, eventResponse, fileResponse, responseCode, userResponse } from '../../utils/constants'
-import { FieldTypeUserJWT, UserCategory } from '../user'
+import { FieldTypeUserJWT, UserCategory, insertChatUser } from '../user'
 import { UploadApiResponse } from 'cloudinary'
 import { destroyImage, uploadImage } from '../../middleware'
 
@@ -86,8 +86,11 @@ const conAssignStaffToEvent = async (req, res, next) => {
   const eventId = req.params.id
   const { userId, category } = req.loggedInUser as FieldTypeUserJWT
 
-  if (!userId || category !== UserCategory.STAFF) {
+  if (!userId) {
     return next({ message: userResponse.error.USER_NOT_FOUND, status: responseCode.BAD_REQUEST })
+  }
+  if (category !== UserCategory.STAFF) {
+    return next({ message: userResponse.error.ONLY_STAFF_REQ, status: responseCode.BAD_REQUEST })
   }
   try {
     const eventInSystem = await eventQuery.fetchEventById(eventId)
@@ -95,6 +98,8 @@ const conAssignStaffToEvent = async (req, res, next) => {
       return next({ message: eventResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
     const updatedEvent = await eventQuery.assignStaffToEvent(eventId, userId)
+    await insertChatUser(userId, eventInSystem[0].userId)
+    await insertChatUser(eventInSystem[0].userId, userId)
     if (updatedEvent) {
       res.status(responseCode.ACCEPTED).send(makeSuccessObject<IEvent>(updatedEvent, eventResponse.success.ASSIGN))
     }
@@ -105,9 +110,6 @@ const conAssignStaffToEvent = async (req, res, next) => {
 
 const conInsertNewEvent = async (req, res, next) => {
   const { userId } = req.loggedInUser as FieldTypeUserJWT
-  if (req.file) {
-    console.log('req: ', req.file)
-  }
   let fileDetail:Nullable<UploadApiResponse> = null
   try {
     if (req.file?.path) {
