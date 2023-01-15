@@ -7,11 +7,13 @@ const router = Router()
 
 router.route('/')
   .get(venueController.conFetchAllVenues)
-  .post(multerSingleImage(), venueController.conInsertNewVenue)
+  .post(venueController.conInsertNewVenue)
 
 router.route('/:id')
   .get(venueController.conFetchVenueById)
-  .put(multerSingleImage(), venueController.conUpdateVenue)
+  .put(venueController.conUpdateVenue)
   .delete(venueController.conDeleteVenue)
+
+router.put('/upload/:id', multerSingleImage(), venueController.conUpdateVenueAfterUpload)
 
 export { router as venueAdminRouter }

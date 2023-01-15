@@ -41,6 +41,23 @@ const conUpdateVenue = async (req, res, next) => {
     return next({ message: venueResponse.error.UPDATE, status: responseCode.BAD_REQUEST })
   }
 
+  try {
+    const venueInSystem = await venueQuery.fetchVenueById(venueId)
+    if (!venueInSystem.length) {
+      return next({ message: venueResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
+    }
+    const updatedVenue = await venueQuery.updateVenue(venueId, mappedVenue)
+    if (updatedVenue) {
+      res.status(responseCode.ACCEPTED).send(makeSuccessObject<IVenue>(updatedVenue, venueResponse.success.UPDATE))
+    }
+  } catch (err) {
+    next({ message: venueResponse.error.UPDATE, status: responseCode.BAD_REQUEST })
+  }
+}
+
+const conUpdateVenueAfterUpload = async (req, res, next) => {
+  const venueId = req.params.id
+
   let fileDetail:Nullable<UploadApiResponse> = null
   try {
     if (req.file?.path) {
@@ -54,7 +71,7 @@ const conUpdateVenue = async (req, res, next) => {
       return next({ message: venueResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
     if (venueInSystem[0].image.public_id && fileDetail) { await destroyImage(venueInSystem[0].image.public_id) }
-    const updatedVenue = await venueQuery.updateVenue(venueId, getBodyWithFileUrl(mappedVenue, fileDetail))
+    const updatedVenue = await venueQuery.updateVenue(venueId, getBodyWithFileUrl({}, fileDetail))
     if (updatedVenue) {
       res.status(responseCode.ACCEPTED).send(makeSuccessObject<IVenue>(updatedVenue, venueResponse.success.UPDATE))
     }
@@ -106,5 +123,6 @@ export {
   conUpdateVenue,
   conFetchVenueById,
   conInsertNewVenue,
-  conDeleteVenue
+  conDeleteVenue,
+  conUpdateVenueAfterUpload
 }

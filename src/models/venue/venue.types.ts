@@ -9,14 +9,14 @@ enum EVenueType {
 }
 
 interface IVenue {
-  name: string,
-  location: string,
-  contact: number[],
-  capacity: {
+  name?: string,
+  location?: string,
+  contact?: number[],
+  capacity?: {
     max: number,
     min?: number
   },
-  price: {
+  price?: {
     paxRange: {
       from: number,
       to: number,
