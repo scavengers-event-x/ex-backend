@@ -8,7 +8,7 @@ const findOptions = {
   populate: [
     { path: 'theme', select: '-_id name' },
     { path: 'venue', select: '-_id name location' },
-    { path: 'userId', select: '-_id profile email' },
+    { path: 'userId', select: '_id profile email' },
     { path: 'assignedStaff', select: '-_id profile email' },
     { path: 'drinks._id', select: '-_id name price image.url' },
     { path: 'cakes._id', select: '-_id name price image.url' },
@@ -23,8 +23,8 @@ const fetchAllEventsOfUserId = (additionalFields: {userId?: ObjectId, assignedSt
   return EventModel.find({ deleted: false, ...additionalFields }, { ...COMMON_UN_PROJECTION }, { ...findOptions })
 }
 
-const fetchEventById = (id: ObjectId) => {
-  return EventModel.find<IEventMain>({ deleted: false, _id: id }, { ...COMMON_UN_PROJECTION }, { ...findOptions })
+const fetchEventById = (id: ObjectId, noPopulate = false) => {
+  return EventModel.find<IEventMain>({ deleted: false, _id: id }, { ...COMMON_UN_PROJECTION }, noPopulate ? {} : { ...findOptions })
 }
 
 const insertEvent = (data: IEvent) => {

@@ -54,7 +54,7 @@ const conUpdateEvent = async (req, res, next) => {
   }
   let fileDetail:Nullable<UploadApiResponse> = null
   try {
-    const eventInSystem = await eventQuery.fetchEventById(eventId)
+    const eventInSystem = await eventQuery.fetchEventById(eventId, true)
     if (!eventInSystem.length) {
       return next({ message: eventResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
@@ -93,7 +93,7 @@ const conAssignStaffToEvent = async (req, res, next) => {
     return next({ message: userResponse.error.ONLY_STAFF_REQ, status: responseCode.BAD_REQUEST })
   }
   try {
-    const eventInSystem = await eventQuery.fetchEventById(eventId)
+    const eventInSystem = await eventQuery.fetchEventById(eventId, true)
     if (!eventInSystem.length) {
       return next({ message: eventResponse.error.NOT_FOUND, status: responseCode.BAD_REQUEST })
     }
