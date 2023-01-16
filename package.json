@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest __test__",
     "start": "ts-node src/index.ts",
     "dev": "nodemon --delay 500ms src/index.ts",
     "lint": "eslint \"./**/*.{ts,tsx}\"",
